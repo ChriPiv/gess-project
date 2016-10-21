@@ -15,7 +15,7 @@ We use an agent-based model adapted from [1] to simulate a financial market. As 
 
 Agents have variable parameters (riskiness and influenceability) which model their strategy. We can therefore differentiate between chartists and fundamentalists (this distinction was absent in [1], however has been used in other models, such as [2]). The transition however is continuous, not discrete. Agents also engage a learning process: Depending on their performance compared to the other agents, they vary their parameters more or less strongly.
 
-There are some global market parameters that can be adjusted: The variations of the market growth fluctiations and asset price fluctuations can be separately set. Additionally the amount of agents participating can be varied aswell. The probability of the cluster creation process, which represents the facility of cooperation/social interactions, is also variable.
+There are some global market parameters that can be adjusted: The variations of the market growth fluctiations and asset price fluctuations can be separately set. Additionally the amount of agents participating can be varied aswell. The probability of the cluster activation process, which represents the facility of cooperation/social interactions, is also variable.
 
 The model is run for a specific number of time steps, aiming at reaching a stable distribution of agent parameters.
 
