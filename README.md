@@ -1,6 +1,6 @@
 # MATLAB Fall 2016 – Research Plan
 
-> * Group Name: DCI
+> * Group Name: Council of Rivendell 
 > * Group participants names: Daniel Keyes, Isabella Marquez, Christophe Piveteau
 > * Project Title: Analyzing Investment Strategies in a Agent-Based Financial Market Simulation
 
