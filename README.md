@@ -15,11 +15,11 @@ One of the earliest works similar to this project is [4], which uses an agent-ba
 
 ## The Model
 
-We use an agent-based model adapted from [1] to simulate a financial market. As the model includes social interactions in the form of clustering, it has been shown to be able to reproduce some key characteristics of real financial markets, such as fat tails and volatility clustering. The model is built upon by adding random price fluctuations and adding smarter agents which undergo a learning process.
+We use an agent-based model adapted from [1] to simulate a financial market. As the model includes social interactions in the form of clustering, it has been shown to be able to reproduce some key characteristics of real financial markets, such as fat tails of price returns and volatility clustering. The model is built upon by adding random price fluctuations and adding smarter agents which undergo a learning process.
 
 Agents have variable parameters (riskiness and influenceability) which model their strategy. We can therefore differentiate between chartists and fundamentalists (this distinction was absent in [1], however has been used in other models, such as [2]). The transition however is continuous, not discrete. Agents also engage a learning process: Depending on their performance compared to the other agents, they vary their parameters more or less strongly.
 
-There are some global market parameters that can be adjusted: The variations of the market growth fluctiations and asset price fluctuations can be separately set. Additionally the amount of agents participating can be varied aswell. The probability of the cluster activation process, which represents the facility of cooperation/social interactions, is also variable.
+There are some global market parameters that can be adjusted: The variations of the asset price fluctuations can be set. Additionally the amount of agents participating can be varied as well. The probability of the cluster activation process, which represents the facility of cooperation/social interactions, is also variable.
 
 The model is run for a specific number of time steps, aiming at reaching a stable distribution of agent parameters.
 
@@ -48,4 +48,4 @@ We expect chartist/influencable agents to be more successfull in markets with hi
 
 ## Research Methods
 
-We will run our agent-based simulations for many different market parameters and analyze the strategy distribution after a long period of time. This will allow us to make a map.
+We will run our agent-based simulations for many different market parameters and analyze the strategy distribution after a long period of time. This will allow us to map phases where different populations are successful.
