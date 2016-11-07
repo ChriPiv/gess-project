@@ -1,27 +1,32 @@
 from setup import simulationSetup
-from simulation import simulationStep
+from simulation import *
+from analysis import *
 
 # Number of agents
-N = 1000
+N = 100
 # Number of simulation steps
-T = 100
-
+T = 300
+# Initial asset price
+P0 = 100.
+# Initial money count of agents
+M0 = 30000.
+# Initial asset count of agents
+A0 = 300
 
 def main():
 	"""Main function of the simulation, containing simulation loop"""
 
 	# Setup
-	[agents, market] = simulationSetup(N)
+	[agents, market] = simulationSetup(N, P0, M0, A0)
 
 	# Run simulation
 	for i in range(0, T):
-		if i % 10 == 0:
-			print 'asdf'
-			# TODO ranking + mutation
+		#if i % 10 == 0:
+		#	# TODO ranking + mutation
 		simulationStep(agents, market)
 
 	# Analyze End results
-	analyze(agents, market)
+	plotStrategyDistribution(agents, market)
 
 
 if __name__ == "__main__":
