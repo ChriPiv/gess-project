@@ -32,7 +32,7 @@ def simulationStep(agents, market):
 		# TODO this is arbitrary. We could use market volatility (?)
 		# or justify why this gives a good result.
 		Pstd = 7.
-		price = int(np.rint(normal(Pmu, Pstd)))
+		price = normal(Pmu, Pstd)
 		if amount > 0: # buy
 			price = clamp(price, 0.01, agent.money / amount)
 		else: #sell
