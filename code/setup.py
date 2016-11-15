@@ -1,5 +1,6 @@
 from agent import Agent
 from market import Market
+from numpy.random import *
 
 def simulationSetup(N, P0, M0, A0):
 	"""
@@ -17,7 +18,7 @@ def simulationSetup(N, P0, M0, A0):
 	agents = []
 	for _ in range(0, N):
 		# All agents are initially the same
-		agents.append(Agent(M0, A0, 0.5, 0.5))
+		agents.append(Agent(M0, A0, uniform(0.8,1.2), uniform(0.,100.), uniform(0., 2.)))
 
 	market = Market(P0)
 

@@ -9,6 +9,7 @@ class Market:
 		history (float array): 	history of prices
 		priceMomentum (float): 	price momentum calculated from previous time step
 	    volatility (float):     volatility of the asset price in the last 20 turns
+	    priceMomentum (float):  current price momentum
     """
 
 
@@ -18,6 +19,7 @@ class Market:
 		self.history = [self.assetPrice]
 		self.priceMomentum = 0.
 		self.volatility = 0.01 # TODO what should this be?
+		self.priceMomentum = 0.
 
 	def setNewPrice(self, price):
 		"""
@@ -33,3 +35,7 @@ class Market:
 				logvalues[i] = np.log(lastvalues[i+1]/lastvalues[i])
 			self.volatility = np.std(logvalues)
 		self.volatility = max(0.001, self.volatility)
+
+		if len(self.history) > 2:
+			# TODO: i took theta arbitrarily (see paper)
+			self.priceMomentum = 0.8 * self.priceMomentum + 0.2 * (self.history[-1] / self.history[-2] - 1)

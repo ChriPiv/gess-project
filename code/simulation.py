@@ -19,9 +19,25 @@ def simulationStep(agents, market):
 	# Make buy + sell orders
 	for i in range(0, N):
 		agent = agents[i]
-		amount = int(np.rint(agent.assets * normal(1., 0.03))) - agent.assets
-		price = market.assetPrice * normal(1., 4.7*market.volatility)
-		
+
+		Amu = 1. + (market.assetPrice - 100.) * agent.fundamentalism + market.priceMomentum * agent.influencability
+		Astd = agent.riskiness * 10
+		amount = agent.assets - int(np.rint(normal(Amu*agent.assets, Astd)))
+		amount = clamp(amount, -agent.assets, float("inf"))
+
+		if amount > 0: # buy
+			Pmu = market.assetPrice * 0.99
+		else: # sell
+			Pmu = market.assetPrice * 1.01
+		# TODO this is arbitrary. We could use market volatility (?)
+		# or justify why this gives a good result.
+		Pstd = 7.
+		price = int(np.rint(normal(Pmu, Pstd)))
+		if amount > 0: # buy
+			price = clamp(price, 0.01, agent.money / amount)
+		else: #sell
+			price = clamp(price, 0.01, float("inf"))
+
 		orders[i] = [amount, price]
 
 	def f(p):
@@ -54,15 +70,15 @@ def simulationStep(agents, market):
 	# Set the new price
 	pstar = market.assetPrice
 	direction = np.sign(f(pstar) - g(pstar))
-	# TODO lol do that better. Ideas: secant method? fitting some polynomial?
+	# TODO lol do that better 
 	# Note: careful that pstar not 0
 	while direction != 0 and direction == np.sign(f(pstar) - g(pstar)):
 		pstar += 0.01*direction
 
 	if pstar <= 0.1:
 		pstar = 0.1
-	print "New market price: ", pstar
 	market.setNewPrice(pstar)
+	print "market price + momentum: ", pstar, market.priceMomentum
 
 	for i in range(0, N):
 		if orders[i][0] > 0 and orders[i][1] <= market.assetPrice:
