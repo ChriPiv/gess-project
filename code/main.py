@@ -21,8 +21,6 @@ def main():
 
 	# Run simulation
 	for i in range(0, T):
-		#if i % 10 == 0:
-		#	# TODO ranking + mutation
 		simulationStep(agents, market)
 
 	# Analyze End results

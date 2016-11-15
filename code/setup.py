@@ -16,8 +16,8 @@ def simulationSetup(N, P0, M0, A0):
 	"""
 
 	agents = []
+	# Generate inital agents
 	for _ in range(0, N):
-		# All agents are initially the same
 		agents.append(Agent(M0, A0, uniform(0.8,1.2), uniform(0.,100.), uniform(0., 2.)))
 
 	market = Market(P0)
