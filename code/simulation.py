@@ -6,6 +6,8 @@ import random
 import matplotlib.pyplot as plt
 import sys
 
+import time
+
 def clamp(x, minval, maxval):
 	return max(minval, min(x, maxval))
 
@@ -19,6 +21,7 @@ def simulationStep(agents, market):
 	orders = [[]] * N
 
 	# Make buy + sell orders
+	start_time = time.time()
 	for i in range(0, N):
 		agent = agents[i]
 
@@ -41,6 +44,8 @@ def simulationStep(agents, market):
 			price = clamp(price, 0.01, float("inf"))
 
 		orders[i] = [amount, price]
+
+	bidding_time = time.time()
 
 	def f(p):
 		retval = 0
@@ -104,7 +109,10 @@ def simulationStep(agents, market):
 	for i in range(0, N):
 		agents[i].assets += orders[i][0]
 		agents[i].money -= orders[i][0]*orders[i][1]
-
+	price_formation_time = time.time()
+	
+	print('time for agents: {}, time for market equilibrium: {}'
+		.format(bidding_time-start_time, price_formation_time-bidding_time))
 
 
 def simulationStepPaper(agents, market):
