@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -23,7 +25,7 @@ def plotStrategyDistribution(agents, market):
 		infl.append(a.influencability)
 	plt.plot(infl, val, '*')
 	fit = np.polyfit(infl, val, 1)
-	print 'Fit value vs influencability:', fit
+	print('Fit value vs influencability:', fit)
 	fit_fn = np.poly1d(fit) 
 	plt.plot(infl, fit_fn(infl)) 
 	plt.show()
@@ -40,5 +42,5 @@ def plotStrategyDistribution(agents, market):
 	total_assets = 0
 	for agent in agents:
 		total_assets += agent.assets
-	print "assets owned: ", total_assets
-	print "(at beginning it was 30000)"
+	print("assets owned: ", total_assets)
+	print("(at beginning it was 30000)")

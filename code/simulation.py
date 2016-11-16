@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import numpy as np
 from numpy.random import rand, randint, normal
 import random
@@ -78,7 +80,7 @@ def simulationStep(agents, market):
 	if pstar <= 0.1:
 		pstar = 0.1
 	market.setNewPrice(pstar)
-	print "market price + momentum: ", pstar, market.priceMomentum
+	print("market price + momentum: ", pstar, market.priceMomentum)
 
 	for i in range(0, N):
 		if orders[i][0] > 0 and orders[i][1] <= market.assetPrice:
@@ -174,7 +176,7 @@ def simulationStepPaper(agents, market):
 
 	if pstar <= 0.1:
 		pstar = 0.1
-	print "New market price: ", pstar
+	print("New market price: ", pstar)
 	market.setNewPrice(pstar)
 
 	
@@ -185,7 +187,7 @@ def simulationStepPaper(agents, market):
 			sell_orders[i] = [0, 0.]
 	
 	# TODO: do this better aswell
-	#print 'having to fix leftovers: ', abs(f(pstar)-g(pstar))
+	#print('having to fix leftovers: ', abs(f(pstar)-g(pstar)))
 	if f(pstar) > g(pstar):
 		for _ in range(0, f(pstar)-g(pstar)):
 			i = randint(N)
