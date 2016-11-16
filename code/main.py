@@ -3,7 +3,7 @@ from simulation import *
 from analysis import *
 
 # Number of agents
-N = 10000
+N = 100
 # Number of simulation steps
 T = 300
 # Initial asset price
