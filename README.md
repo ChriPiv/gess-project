@@ -15,10 +15,10 @@ One of the earliest works similar to this project is [4], which uses an agent-ba
 
 ## The Model
 
-We use an agent-based model losely based on [1] to simulate a financial market. Every timestep each agent makes a buy/sell order which consists of an amount of assets to be traded and a limit price at which those assets are to be traded.
+We use an agent-based model losely based on [1] to simulate a financial market. At every timestep each agent makes a buy/sell order which consists of an amount of assets to be traded and a limit price at which those assets are to be traded.
 
-This amount is computed in the following way: The agent considers how much assets it wants to own next timestep. This value is drawn from a normal distribution with mean <i>mu<sub>S</sub></i> and standard deviation <i>sigma<sub>S</sub></i>:<br/>
-<i>mu<sub>S</sub></i> = currentAmountOfAssets * (1 + (marketPrice - meanMarketPriceOverNTimesteps) * agentConservativness + priceMomentum * agentInfluencability)<br/>
+This amount is computed in the following way: The agent considers how many assets it wants to own next timestep. This value is drawn from a normal distribution with mean <i>mu<sub>S</sub></i> and standard deviation <i>sigma<sub>S</sub></i>:<br/>
+<i>mu<sub>S</sub></i> = currentAmountOfAssets * (1 + (marketPrice - meanMarketPriceOverNTimesteps) * agentConservativeness + priceMomentum * agentInfluencability)<br/>
 <i>sigma<sub>S</sub></i> = agentNoisiness<br />
 We see that <i>mu<sub>S</sub></i> starts out to be around the current amount of assets of the agent. There are two force influencing <i>mu<sub>A</sub></i>: If the market price is higher(lower) than the average in recent history, then the agent is more likely to sell(buy). If a lot of people are buying(selling) and thus the market price momentum is high(low) the agent is more likely to buy(sell). These two forces are weighted by two agent parameters: its conservativeness and its influencability.
 A third parameter governs the behaviour of our agent: its noisiness.
@@ -31,7 +31,7 @@ Finally the order price is also taken from a normal distribution with mean <i>mu
 Agents also undergo a learning process. The model is run for a specific number of time steps, then a ranking of the agents is done considering their final owned wealth. Depending on how successfull each agent was in that ranking, it will adapt its parameters: A successfull agent will only slightly change its parameters, while less successfull agents will vary them more strongly.
 
 As this convergence process could be extremely complex, we will first start out by reducing our agent paramaters to one dimension. We will fix the agent noisiness to be constant for all agents and tie conservativeness and influencability together:<br />
-noisiness = C - influencability with C being a constant<br />
+conservativeness = C - influencability, with C being a constant<br />
 basically reducing both parameters to one.
 
 
