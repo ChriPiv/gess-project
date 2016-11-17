@@ -15,13 +15,24 @@ One of the earliest works similar to this project is [4], which uses an agent-ba
 
 ## The Model
 
-We use an agent-based model adapted from [1] to simulate a financial market. As the model includes social interactions in the form of clustering, it has been shown to be able to reproduce some key characteristics of real financial markets, such as fat tails of price returns and volatility clustering. The model is built upon by adding random price fluctuations and adding smarter agents which undergo a learning process.
+We use an agent-based model losely based on [1] to simulate a financial market. Every timestep each agent makes a buy/sell order which consists of an amount of assets to be traded and a limit price at which those assets are to be traded.
 
-Agents have variable parameters (riskiness and influenceability) which model their strategy. We can therefore differentiate between chartists and fundamentalists (this distinction was absent in [1], however has been used in other models, such as [2]). The transition however is continuous, not discrete. Agents also engage a learning process: Depending on their performance compared to the other agents, they vary their parameters more or less strongly.
+This amount is computed in the following way: The agent considers how much assets it wants to own next timestep. This value is drawn from a normal distribution with mean <i>mu<sub>S</sub></i> and standard deviation <i>sigma<sub>S</sub></i>:
+<i>mu<sub>S</sub></i> = currentAmountOfAssets * (1 + (marketPrice - meanMarketPriceOverNTimesteps) * agentConservativness + priceMomentum * agentInfluencability)
+<i>mu<sub>S</sub></i> = agentNoisiness
+We see the <i>mu<sub>S</sub></i> starts out to be around the current amount of assets of the agnet. There are two force influencing <i><sub>mu</sub>A</i>: If the market price is higher(lower) than the average in recent history, then the agent is more likely to sell(buy). If a lot of people are buying(selling) and thus the market price momentum is high(low) the agent is more likely to buy(sell). These two forces are weighted by two agent parameters: its conservativeness and its influencability.
+A third parameter governs the behaviour of our agent: its noisiness.
 
-There are some global market parameters that can be adjusted: The variations of the asset price fluctuations can be set. Additionally the amount of agents participating can be varied as well. The probability of the cluster activation process, which represents the facility of cooperation/social interactions, is also variable.
+Finally the order price is also taken from a normal distribution with mean <i>mu<sub>P</sub></i> and standard deviation <i>sigma<sub>P</sub></i>:
+<i>mu<sub>P</sub></i> = 0.99 * currentAssetPrice if the agent is buying
+<i>mu<sub>P</sub></i> = 1.01 * currentAssetPrice if the agent is selling
+<i>sigma<sub>P</sub></i> = const. * marketVolatility
 
-The model is run for a specific number of time steps, aiming at reaching a stable distribution of agent parameters.
+Agents also undergo a learning process. The model is run for a specific number of time steps, then a ranking of the agents is done considering their final owned wealth. Depending on how successfull each agent was in that ranking, it will adapt its parameters: A successfull agent will only slightly change its parameters, while less successfull agents will vary them more strongly.
+
+As this convergence process could be extremely complex, we will first start out by reducing our agent paramaters to 1. We will fix the agent noisiness and tie conservativeness and influencability together
+noisiness = C - influencability with C being a constant
+basically reducing both parameters to one.
 
 
 ## Fundamental Questions
