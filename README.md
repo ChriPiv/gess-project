@@ -19,8 +19,8 @@ We use an agent-based model losely based on [1] to simulate a financial market. 
 
 This amount is computed in the following way: The agent considers how much assets it wants to own next timestep. This value is drawn from a normal distribution with mean <i>mu<sub>S</sub></i> and standard deviation <i>sigma<sub>S</sub></i>:<br/>
 <i>mu<sub>S</sub></i> = currentAmountOfAssets * (1 + (marketPrice - meanMarketPriceOverNTimesteps) * agentConservativness + priceMomentum * agentInfluencability)<br/>
-<i>mu<sub>S</sub></i> = agentNoisiness<br />
-We see the <i>mu<sub>S</sub></i> starts out to be around the current amount of assets of the agnet. There are two force influencing <i><sub>mu</sub>A</i>: If the market price is higher(lower) than the average in recent history, then the agent is more likely to sell(buy). If a lot of people are buying(selling) and thus the market price momentum is high(low) the agent is more likely to buy(sell). These two forces are weighted by two agent parameters: its conservativeness and its influencability.
+<i>sigma<sub>S</sub></i> = agentNoisiness<br />
+We see that <i>mu<sub>S</sub></i> starts out to be around the current amount of assets of the agent. There are two force influencing <i>mu<sub>A</sub></i>: If the market price is higher(lower) than the average in recent history, then the agent is more likely to sell(buy). If a lot of people are buying(selling) and thus the market price momentum is high(low) the agent is more likely to buy(sell). These two forces are weighted by two agent parameters: its conservativeness and its influencability.
 A third parameter governs the behaviour of our agent: its noisiness.
 
 Finally the order price is also taken from a normal distribution with mean <i>mu<sub>P</sub></i> and standard deviation <i>sigma<sub>P</sub></i>:<br/>
@@ -30,8 +30,8 @@ Finally the order price is also taken from a normal distribution with mean <i>mu
 
 Agents also undergo a learning process. The model is run for a specific number of time steps, then a ranking of the agents is done considering their final owned wealth. Depending on how successfull each agent was in that ranking, it will adapt its parameters: A successfull agent will only slightly change its parameters, while less successfull agents will vary them more strongly.
 
-As this convergence process could be extremely complex, we will first start out by reducing our agent paramaters to 1. We will fix the agent noisiness and tie conservativeness and influencability together
-noisiness = C - influencability with C being a constant
+As this convergence process could be extremely complex, we will first start out by reducing our agent paramaters to one dimension. We will fix the agent noisiness to be constant for all agents and tie conservativeness and influencability together:<br />
+noisiness = C - influencability with C being a constant<br />
 basically reducing both parameters to one.
 
 
