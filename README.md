@@ -17,16 +17,16 @@ One of the earliest works similar to this project is [4], which uses an agent-ba
 
 We use an agent-based model losely based on [1] to simulate a financial market. Every timestep each agent makes a buy/sell order which consists of an amount of assets to be traded and a limit price at which those assets are to be traded.
 
-This amount is computed in the following way: The agent considers how much assets it wants to own next timestep. This value is drawn from a normal distribution with mean <i>mu<sub>S</sub></i> and standard deviation <i>sigma<sub>S</sub></i>:
-<i>mu<sub>S</sub></i> = currentAmountOfAssets * (1 + (marketPrice - meanMarketPriceOverNTimesteps) * agentConservativness + priceMomentum * agentInfluencability)
-<i>mu<sub>S</sub></i> = agentNoisiness
+This amount is computed in the following way: The agent considers how much assets it wants to own next timestep. This value is drawn from a normal distribution with mean <i>mu<sub>S</sub></i> and standard deviation <i>sigma<sub>S</sub></i>:<br/>
+<i>mu<sub>S</sub></i> = currentAmountOfAssets * (1 + (marketPrice - meanMarketPriceOverNTimesteps) * agentConservativness + priceMomentum * agentInfluencability)<br/>
+<i>mu<sub>S</sub></i> = agentNoisiness<br />
 We see the <i>mu<sub>S</sub></i> starts out to be around the current amount of assets of the agnet. There are two force influencing <i><sub>mu</sub>A</i>: If the market price is higher(lower) than the average in recent history, then the agent is more likely to sell(buy). If a lot of people are buying(selling) and thus the market price momentum is high(low) the agent is more likely to buy(sell). These two forces are weighted by two agent parameters: its conservativeness and its influencability.
 A third parameter governs the behaviour of our agent: its noisiness.
 
-Finally the order price is also taken from a normal distribution with mean <i>mu<sub>P</sub></i> and standard deviation <i>sigma<sub>P</sub></i>:
-<i>mu<sub>P</sub></i> = 0.99 * currentAssetPrice if the agent is buying
-<i>mu<sub>P</sub></i> = 1.01 * currentAssetPrice if the agent is selling
-<i>sigma<sub>P</sub></i> = const. * marketVolatility
+Finally the order price is also taken from a normal distribution with mean <i>mu<sub>P</sub></i> and standard deviation <i>sigma<sub>P</sub></i>:<br/>
+<i>mu<sub>P</sub></i> = 0.99 * currentAssetPrice if the agent is buying<br/>
+<i>mu<sub>P</sub></i> = 1.01 * currentAssetPrice if the agent is selling<br/>
+<i>sigma<sub>P</sub></i> = const. * marketVolatility<br/>
 
 Agents also undergo a learning process. The model is run for a specific number of time steps, then a ranking of the agents is done considering their final owned wealth. Depending on how successfull each agent was in that ranking, it will adapt its parameters: A successfull agent will only slightly change its parameters, while less successfull agents will vary them more strongly.
 
