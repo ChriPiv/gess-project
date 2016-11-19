@@ -10,7 +10,7 @@ The importance of understanding the dynamics in a financial market and the param
 
 For instance, in order to secure market confidence, regulate foreign participation and prevent collusion, policy makers have become increasingly interested in identifying dominant trading strategies and the social effects that level the playing field. The market composition plays a significant role in the predictive analysis as it is likely to exacerbate inherent financial dynamics. Examples are the speculative bubbles experienced in 2000 and 2007 as observed by Kaizoji et al [2].
 
-One of the earliest works similar to this project is [4], which uses an agent-based economic model. Further related works that use the same model have mostly investigated emerging market characteristics (formation of demand/supply or characteristic price formation). Since the agent-based model has proven its usefulness in modelling market characteristics we feel comfortable to adopt and expand the proposed model in order to study how market characteristics propagate back to the agent as in how they adapt their strategies.
+One of the earliest works similar to this project is [4], which uses an agent-based economic model. Further related works that use the same model have mostly investigated emerging market characteristics (formation of demand/supply or characteristic price formation). Since the agent-based model has proven its usefulness in modelling market characteristics we feel comfortable to adopt and expand the proposed model in order to study how emergent market characteristics propagate back to the agent as in how they adapt their strategies.
 
 
 ## The Model
@@ -39,17 +39,24 @@ basically reducing both parameters to one.
 
 ## Fundamental Questions
 
-How does the evolution and distribution of strategies depend on market parameters?
-Which strategy/strategies prevail/s depending on the market parameters?
-What subspaces of our market parameter spaces produce mostly one strategy? What subspaces allow for a wider range of successful strategies?
-Can our model predict interesting properties of real markets in the term of optimal strategies?
+How does the evolution and distribution of strategies in our market look like?
+Does the model converge to a stable distribution of strategies?
+How does such a stable strategy distribution look like and how does it depend on the inital parameters?
+How many dimension can our agent parameter space have such that the strategy distribution still converges?
+Can external interventions on the market (e.g. policies) change the strategy distribution?
 
 
 ## Expected Results
 
-We expect high risk traders to be at the same time be the most and least successful traders in our ranking.
+We expect agents having
+* a very low influencability to be less successful as they do not account for the herding behaviour in the market.
+* a very high influencability to be less successful as they misinterpret market price fluctuations as herding in the market.
+* a very low conservativeness to be less successful as they miss out on the moment to buy/sell when the price is very low/high.
+* a very high conservativeness to do consistently doing ok, but not stand out as they do not account for market herding.
+* a low noisiness to be more consistent.
+* a hight noisiness to be less consistent but having a higher chance to stand out.
 
-We expect chartist/influencable agents to be more successfull in markets with higher clustering probabilities, as they will be able to make buy decisions which take into account the greater social movements inside our market. But when market fluctuations are too big, the entirety of the chartist agents starts encountering higher risks of losing money together at one time, as market fluctuations start to have higher effects than social movements.
+Thus we expect to find a confined subspace of the agent parameter space in which most of the strategies will lie in.
 
 
 ## References 
@@ -61,4 +68,4 @@ We expect chartist/influencable agents to be more successfull in markets with hi
 
 ## Research Methods
 
-We will run our agent-based simulations for many different market parameters and analyze the strategy distribution after a long period of time. This will allow us to map phases where different populations are successful.
+We will run our agent-based simulations for long periods of time and analyze the convergens of the strategy distribution.
