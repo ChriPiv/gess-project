@@ -39,10 +39,10 @@ basically reducing both parameters to one.
 
 ## Fundamental Questions
 
-How does the evolution and distribution of strategies in our market look like?
-Does the model converge to a stable distribution of strategies?
-How does such a stable strategy distribution look like and how does it depend on the inital parameters?
-How many dimension can our agent parameter space have such that the strategy distribution still converges?
+How does the evolution and distribution of strategies in our market look like?<br />
+Does the model converge to a stable distribution of strategies?<br />
+How does such a stable strategy distribution look like and how does it depend on the inital parameters?<br />
+How many dimension can our agent parameter space have such that the strategy distribution still converges?<br />
 Can external interventions on the market (e.g. policies) change the strategy distribution?
 
 
@@ -52,9 +52,9 @@ We expect agents having
 * a very low influencability to be less successful as they do not account for the herding behaviour in the market.
 * a very high influencability to be less successful as they misinterpret market price fluctuations as herding in the market.
 * a very low conservativeness to be less successful as they miss out on the moment to buy/sell when the price is very low/high.
-* a very high conservativeness to do consistently doing ok, but not stand out as they do not account for market herding.
+* a very high conservativeness to be consistently doing ok, but not standing out as they do not cash in on market herding behaviour.
 * a low noisiness to be more consistent.
-* a hight noisiness to be less consistent but having a higher chance to stand out.
+* a high noisiness to be less consistent but having a higher chance to stand out.
 
 Thus we expect to find a confined subspace of the agent parameter space in which most of the strategies will lie in.
 
