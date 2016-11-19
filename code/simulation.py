@@ -26,8 +26,8 @@ def simulationStep(agents, market):
 	for i in range(0, N):
 		agent = agents[i]
 
-		Amu = 1. + (market.assetPrice - 100.) * agent.fundamentalism + market.priceMomentum * agent.influencability
-		Astd = agent.riskiness * 10
+		Amu = 1. + (market.assetPrice - 100.) * agent.conservativeness + market.priceMomentum * agent.influencability
+		Astd = agent.noisiness * 10
 		amount = agent.assets - int(np.rint(normal(Amu*agent.assets, Astd)))
 		amount = clamp(amount, -agent.assets, float("inf"))
 
