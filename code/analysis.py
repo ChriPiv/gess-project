@@ -3,6 +3,17 @@ from __future__ import print_function
 import numpy as np
 import matplotlib.pyplot as plt
 
+def saveDistributionToFile(agents, market, filename):
+	value = []
+	for a in agents:
+		value.append(a.assets*market.assetPrice + a.money)
+	plt.figure()
+	plt.xlim([0, 150000])
+	plt.ylim([0, 300])
+	plt.hist(value, bins=np.linspace(0, 150000, 60))
+	plt.savefig("out/" + filename)
+
+
 def plotStrategyDistribution(agents, market):
 	"""
 	Plot the frequencies of the different strategy parameter ranges
@@ -42,5 +53,5 @@ def plotStrategyDistribution(agents, market):
 	total_assets = 0
 	for agent in agents:
 		total_assets += agent.assets
-	print("assets owned: ", total_assets)
-	print("(at beginning it was 30000)")
+	#print("assets owned: ", total_assets)
+	#print("(at beginning it was 30000)")

@@ -3,9 +3,9 @@ from simulation import *
 from analysis import *
 
 # Number of agents
-N = 100
+N = 1000
 # Number of simulation steps
-T = 300
+T = 4000
 # Initial asset price
 P0 = 100.
 # Initial money count of agents
@@ -21,6 +21,8 @@ def main():
 
 	# Run simulation
 	for i in range(0, T):
+		#if i % 100 == 0:
+		# 	saveDistributionToFile(agents, market, "dist" + str(i) + ".png")
 		simulationStep(agents, market)
 
 	# Analyze End results
