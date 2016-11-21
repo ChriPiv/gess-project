@@ -5,7 +5,7 @@ from analysis import *
 # Number of agents
 N = 1000
 # Number of simulation steps
-T = 4000
+T = 10000
 # Initial asset price
 P0 = 100.
 # Initial money count of agents
@@ -23,6 +23,7 @@ def main():
 	for i in range(0, T):
 		#if i % 100 == 0:
 		# 	saveDistributionToFile(agents, market, "dist" + str(i) + ".png")
+		#plotStrategyDistribution(agents, market)
 		simulationStep(agents, market)
 
 	# Analyze End results

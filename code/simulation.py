@@ -26,24 +26,24 @@ def simulationStep(agents, market):
 	for i in range(0, N):
 		agent = agents[i]
 
-		Amu = 1. + (market.assetPrice - 100.) * agent.conservativeness + market.priceMomentum * agent.influencability
-		Astd = agent.noisiness * 10
-		amount = agent.assets - int(np.rint(normal(Amu*agent.assets, Astd)))
-		amount = clamp(amount, -agent.assets, float("inf"))
-
+		Amu = (100. - market.assetPrice) * agent.conservativeness + market.priceMomentum * agent.influencability
+		Astd = agent.noisiness 
+		amount = int(np.rint( agent.assets * normal(Amu, Astd) ))
 		if amount > 0: # buy
-			Pmu = market.assetPrice * 0.99
+			Pmu = 0.99
 		else: # sell
-			Pmu = market.assetPrice * 1.01
+			Pmu = 1.01
 		# TODO this is arbitrary. We could use market volatility (?)
 		# or justify why this gives a good result.
-		Pstd = 7.
-		price = normal(Pmu, Pstd)
+		Pstd = 0.1
+		price = normal(Pmu*market.assetPrice, Pstd*market.assetPrice)
+
+		price = clamp(price, 0.01, float("inf"))
 		if amount > 0: # buy
-			price = clamp(price, 0.01, agent.money / amount)
+			amount = clamp(amount, 0, int(1. * agent.money / price))
 			price_list = buyers_by_price
 		else: #sell
-			price = clamp(price, 0.01, float("inf"))
+			amount = clamp(amount, -agent.assets, 0)
 			price_list = sellers_by_price
 
 		if price not in price_list:

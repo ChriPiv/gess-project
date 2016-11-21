@@ -31,14 +31,14 @@ def plotStrategyDistribution(agents, market):
 	# Plot final value vs influencability
 	val = []
 	infl = []
+	consv = []
 	for a in agents:
 		val.append(a.assets*market.assetPrice + a.money)
 		infl.append(a.influencability)
-	plt.plot(infl, val, '*')
-	fit = np.polyfit(infl, val, 1)
-	print('Fit value vs influencability:', fit)
-	fit_fn = np.poly1d(fit) 
-	plt.plot(infl, fit_fn(infl)) 
+		consv.append(a.conservativeness)
+	plt.figure()
+	sc = plt.scatter(infl, consv, c=val)
+	plt.colorbar(sc)
 	plt.show()
 
 	# Plot price history
