@@ -1,11 +1,14 @@
-from setup import simulationSetup
+from setup import *
 from simulation import *
 from analysis import *
+from optimization import *
 
 # Number of agents
 N = 1000
-# Number of simulation steps
-T = 10000
+# Number of learning steps
+L = 10
+# Number of simulation steps (per learning process)
+T = 1000
 # Initial asset price
 P0 = 100.
 # Initial money count of agents
@@ -16,18 +19,17 @@ A0 = 300
 def main():
 	"""Main function of the simulation, containing simulation loop"""
 
-	# Setup
 	[agents, market] = simulationSetup(N, P0, M0, A0)
 
 	# Run simulation
-	for i in range(0, T):
-		#if i % 100 == 0:
-		# 	saveDistributionToFile(agents, market, "dist" + str(i) + ".png")
-		#plotStrategyDistribution(agents, market)
-		simulationStep(agents, market)
-
-	# Analyze End results
-	plotStrategyDistribution(agents, market)
+	for l in range(0, L):
+		resetSimulation(agents, market, P0, M0, A0)
+		for t in range(0, T):
+			#saveDistributionToFile(agents, market, "dist" + str(i) + ".png")
+			simulationStep(agents, market)
+	
+		saveStrategyDistributionToFile(agents, market, "dist" + str(l) + ".png")
+		optimizeGradient(agents, market, saveToFile="gradient"+str(l)+".png")
 
 
 if __name__ == "__main__":

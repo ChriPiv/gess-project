@@ -86,7 +86,7 @@ def simulationStep(agents, market):
 		plt.show()
 	
 	market.setNewPrice(pstar)
-	print("market price + momentum: ", pstar, market.priceMomentum)
+	#print("market price + momentum: ", pstar, market.priceMomentum)
 
 	for (agent_idx, amount, price) in accepted_orders:
 		agents[agent_idx].assets += amount

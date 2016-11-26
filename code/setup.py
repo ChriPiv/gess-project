@@ -18,8 +18,23 @@ def simulationSetup(N, P0, M0, A0):
 	agents = []
 	# Generate inital agents
 	for _ in range(0, N):
-		agents.append(Agent(M0, A0, 0.05, uniform(0.,4.), uniform(0.003, 0.006)))
+		noisiness = 0.05
+		# Our space we are interested in is 
+		# [0,4] for influencability
+		# [0,0.1] for conservativeness
+		# so we link them by infl + 800*consvs = 4
+		# but we allow agents outside aswell
+		influencability = normal(5., 3.)#uniform(0., 4.)
+		conservativeness = (9. - influencability) / 400.
+		agents.append(Agent(M0, A0, noisiness, influencability, conservativeness))
 
 	market = Market(P0)
 
 	return agents, market
+
+
+def resetSimulation(agents, market, P0, M0, A0):
+	for agent in agents:
+		agent.money = M0
+		agent.assets = A0
+	market = Market(P0)

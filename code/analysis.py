@@ -3,7 +3,29 @@ from __future__ import print_function
 import numpy as np
 import matplotlib.pyplot as plt
 
-def saveDistributionToFile(agents, market, filename):
+def saveStrategyDistributionToFile(agents, market, filename):
+	val = []
+	infl = []
+	consv = []
+	for a in agents:
+		val.append(a.assets*market.assetPrice + a.money)
+		infl.append(a.influencability)
+		consv.append(a.conservativeness)
+	## 1D:
+	plt.figure()
+	plt.xlim([-10, 20])
+	plt.ylim([0, 120])
+	plt.hist(infl, bins=30)
+	plt.savefig("out/" + filename)
+	## 2D:
+	#plt.figure()
+	#plt.xlim([-10, 20])
+	#plt.ylim([-0.04, 0.05])
+	#sc = plt.scatter(infl, consv, c=val)
+	#plt.colorbar(sc)
+	#plt.savefig("out/" + filename)
+
+def saveMoneyDistributionToFile(agents, market, filename):
 	value = []
 	for a in agents:
 		value.append(a.assets*market.assetPrice + a.money)
@@ -31,15 +53,25 @@ def plotStrategyDistribution(agents, market):
 	# Plot final value vs influencability
 	val = []
 	infl = []
-	consv = []
 	for a in agents:
 		val.append(a.assets*market.assetPrice + a.money)
 		infl.append(a.influencability)
-		consv.append(a.conservativeness)
 	plt.figure()
-	sc = plt.scatter(infl, consv, c=val)
-	plt.colorbar(sc)
+	sc = plt.plot(infl, val, '*')
 	plt.show()
+
+	# Plot a color scatter plot: value vs influencability and conservativeness
+	#val = []
+	#infl = []
+	#consv = []
+	#for a in agents:
+	#	val.append(a.assets*market.assetPrice + a.money)
+	#	infl.append(a.influencability)
+	#	consv.append(a.conservativeness)
+	#plt.figure()
+	#sc = plt.scatter(infl, consv, c=val)
+	#plt.colorbar(sc)
+	#plt.show()
 
 	# Plot price history
 	T = len(market.history)
