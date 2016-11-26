@@ -2,7 +2,7 @@
 
 > * Group Name: Council of Rivendell 
 > * Group participants names: Daniel Keyes, Isabella Marquez, Christophe Piveteau
-> * Project Title: Analyzing Investment Strategies in a Agent-Based Financial Market Simulation
+> * Project Title: Analyzing Convergence Behaviour of Strategy Distributions in an Agent-Based Financial Market Simulation with Learning Agents
 
 ## General Introduction
 
