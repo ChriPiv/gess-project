@@ -27,10 +27,11 @@ def main():
 		for t in range(0, T):
 			#saveDistributionToFile(agents, market, "dist" + str(i) + ".png")
 			simulationStep(agents, market)
-	
-		saveStrategyDistributionToFile(agents, market, "dist" + str(l) + ".png")
-		optimizeGradient(agents, market, saveToFile="gradient"+str(l)+".png")
+		print ("finished current simulation round")
 
+		saveStrategyDistributionToFile(agents, market, "dist" + str(l) + ".png")
+		# optimizeGradient(agents, market, saveToFile="gradient"+str(l)+".png")
+		optimizeNaive(agents, market, saveToFile="wealth"+str(l)+".png")
 
 if __name__ == "__main__":
 	main()

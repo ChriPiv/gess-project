@@ -6,13 +6,26 @@ import random
 import matplotlib.pyplot as plt
 import sys
 
-def optimizeNaive(agents, market):
+def optimizeNaive(agents, market, saveToFile=None):
 	agents = sortAgents(agents, market)
 	N = len(agents)
 	for i in range(0, N):
 		agent = agents[i]
-		agent.influencability += normal(0., 0.00001+1.*i/N)
+		agent.influencability += normal(0., 0.00001+1.*(N-i)/N) # Mean = 0, Std = 0.00001, i = index of the agent
 		agent.conservativeness = (9. - agent.influencability) / 400.
+	if saveToFile is not None:
+		influencability = []
+		wealth = []
+		conservativeness = []
+		for agent in agents:
+			influencability.append(agent.influencability)
+			wealth.append(agent.netWorth(market))
+			conservativeness.append(agent.conservativeness)
+		plt.figure()
+		plt.scatter(influencability, conservativeness, c=wealth)
+		plt.xlabel("influencability")
+		plt.ylabel("conservativeness")
+		plt.savefig("out/" + saveToFile)
 
 def optimizeGradient(agents, market, saveToFile=None):
 	agents = sortAgents(agents, market)
