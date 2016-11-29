@@ -1,3 +1,5 @@
+import os
+
 from setup import *
 from simulation import *
 from analysis import *
@@ -18,6 +20,10 @@ A0 = 300
 
 def main():
 	"""Main function of the simulation, containing simulation loop"""
+
+	# Create output directory if it doesn't already exist
+	if not os.path.exists('out/'):
+		os.makedirs('out/')
 
 	[agents, market] = simulationSetup(N, P0, M0, A0)
 
