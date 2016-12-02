@@ -13,9 +13,13 @@ def saveStrategyDistributionToFile(agents, market, filename):
 		consv.append(a.conservativeness)
 	## 1D:
 	plt.figure()
-	plt.xlim([-10, 20])
+	xstart = -10
+	xend = 20
+	bins = 30
+	plt.xlim([xstart, xend])
 	plt.ylim([0, 120])
-	plt.hist(infl, bins=30)
+	edges = np.linspace(xstart, xend, bins+1);
+	plt.hist(infl, bins=edges)
 	plt.savefig("out/" + filename)
 	plt.close()
 	## 2D:
@@ -35,6 +39,7 @@ def saveMoneyDistributionToFile(agents, market, filename):
 	plt.ylim([0, 300])
 	plt.hist(value, bins=np.linspace(0, 150000, 60))
 	plt.savefig("out/" + filename)
+
 
 
 def plotStrategyDistribution(agents, market):
