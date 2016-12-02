@@ -8,7 +8,7 @@ from optimization import *
 # Number of agents
 N = 1000
 # Number of learning steps
-L = 10
+L = 500
 # Number of simulation steps (per learning process)
 T = 1000
 # Initial asset price
@@ -37,7 +37,8 @@ def main():
 
 		saveStrategyDistributionToFile(agents, market, "dist" + str(l) + ".png")
 		# optimizeGradient(agents, market, saveToFile="gradient"+str(l)+".png")
-		optimizeNaive(agents, market, saveToFile="wealth"+str(l)+".png")
+		# optimizeNaive(agents, market, saveToFile="wealth"+str(l)+".png")
+		optimizeMLS(agents, market, saveToFile="wealth"+str(l)+".png")
 
 if __name__ == "__main__":
 	main()

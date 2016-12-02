@@ -55,6 +55,7 @@ def optimizeGradient(agents, market, saveToFile=None):
 		plt.figure()
 		plt.scatter(scatterx, scattery, c=scatterc)
 		plt.savefig("out/" + saveToFile)
+		plt.close()
 
 	for agent in agents:
 		bef = agent.influencability
@@ -64,6 +65,51 @@ def optimizeGradient(agents, market, saveToFile=None):
 
 def optimizeEvolutionary(agents, market):
 	return
+
+def optimizeMLS(agents, market, saveToFile=None):
+
+	sigma = np.asarray([2, 1])
+	D = 1
+
+	influencabilities = []
+	gradients = []
+	assetPrices = []
+	for agent in agents:
+		sumPhiXX = np.zeros((D+1, D+1), dtype=float)
+		sumPhiXF = np.zeros((D+1), dtype=float)
+
+		x = np.asarray([agent.influencability, 1])
+		for otherAgent in agents:
+			x_i = np.asarray([otherAgent.influencability, 1])
+
+			phi = np.exp(-np.linalg.norm((x - x_i)/sigma)**2)
+
+			sumPhiXX += phi*np.outer(x_i, x_i)
+			sumPhiXF += phi*x_i*otherAgent.netWorth(market)
+		EPSILON = 1e-9
+		if(np.abs(np.linalg.det(sumPhiXX)) >= EPSILON):
+			c = np.linalg.inv(sumPhiXX).dot(sumPhiXF)
+		else:
+			# this can happen if no other agents are close enough. Assign 0 gradient.
+			# maybe instead, the agent should move closer to the mean? not sure.
+			c = np.zeros((D+1), dtype=float)
+
+		agent.gradient = c[0]
+
+		influencabilities.append(agent.influencability)
+		gradients.append(agent.gradient)
+		assetPrices.append(agent.netWorth(market))
+
+	if saveToFile != None:
+		plt.figure()
+		plt.scatter(influencabilities, gradients, c=assetPrices)
+		plt.savefig("out/" + saveToFile)
+
+	learningRate = 1./2000.
+	for agent in agents:
+		# TODO: maybe compare this with random movement, as in optimizeGradient
+		agent.influencability += learningRate*agent.gradient
+		agent.conservativeness = (9. - agent.influencability) / 400.
 
 """
 return agent array sorted by their wealth, ascending 
