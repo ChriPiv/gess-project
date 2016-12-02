@@ -17,6 +17,7 @@ def saveStrategyDistributionToFile(agents, market, filename):
 	plt.ylim([0, 120])
 	plt.hist(infl, bins=30)
 	plt.savefig("out/" + filename)
+	plt.close()
 	## 2D:
 	#plt.figure()
 	#plt.xlim([-10, 20])
