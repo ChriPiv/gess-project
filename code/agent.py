@@ -15,5 +15,14 @@ class Agent:
 		self.noisiness = float(noisiness)
 		self.influencability = float(influencability)
 		self.conservativeness = float(conservativeness)
+
 	def netWorth(self, market):
 		return self.money + self.assets * market.assetPrice
+
+
+"""
+When doing 1D simulations we tie conservativeness and
+influencability to each other with following function
+"""
+def consFromInfl(influencability):
+	return (9. - influencability) / 400.

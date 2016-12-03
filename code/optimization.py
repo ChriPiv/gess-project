@@ -5,6 +5,7 @@ from numpy.random import rand, randint, normal
 import random
 import matplotlib.pyplot as plt
 import sys
+from agent import consFromInfl
 
 def optimizeNaive(agents, market, saveToFile=None):
 	agents = sortAgents(agents, market)
@@ -27,7 +28,7 @@ def optimizeNaive(agents, market, saveToFile=None):
 		plt.ylabel("conservativeness")
 		plt.savefig("out/" + saveToFile)
 
-def optimizeGradient(agents, market, saveToFile=None):
+def optimizeGradient(agents, market, saveToFile=None, OneD=False):
 	agents = sortAgents(agents, market)
 	N = len(agents)
 
@@ -36,21 +37,35 @@ def optimizeGradient(agents, market, saveToFile=None):
 	scatterc = []
 	for i in range(0, N):
 		agent = agents[i]
-		gradient = 0.
-		weight = 0.
+		# For both influencability and conservativeness we estimate the gradient
+		gradientI = 0.
+		weightI = 0.
+		gradientC = 0.
+		weightC = 0.
 		for a2 in agents:
-			dist = a2.influencability - agent.influencability
+			distI = a2.influencability - agent.influencability
+			distC = a2.conservativeness - agent.conservativeness
 			# Don't consider the same agent
-			if dist == 0:
-				dist = float("inf")
-			weight += np.exp(-abs(dist))
-			gradient += np.exp(-abs(dist)) * (a2.money-agent.money + market.assetPrice*(a2.assets-agent.assets)) * np.sign(dist) * ((a2.money+a2.assets*market.assetPrice)/(agents[-1].money+agents[-1].assets*market.assetPrice))
-			#print(np.exp(-100.*abs(dist)) * (a2.money-agent.money + market.assetPrice*(a2.assets-agent.assets)) / (0.0001+dist))
-		agent.gradient = gradient / weight
-		agent.gradient *= (1. - 1.*i/N)
-		scatterx.append(agent.influencability)
-		scattery.append(agent.gradient)
-		scatterc.append(agent.money+agent.assets*market.assetPrice)
+			if distI == 0.:
+				distI = float("inf")
+			if distC == 0.:
+				distC = float("inf")
+			weightI += np.exp(-abs(distI))
+			weightC += np.exp(-abs(distC))
+			gradientI += np.exp(-abs(distI)) * (a2.netWorth(market) - agent.netWorth(market)) * np.sign(distI) * (a2.netWorth(market)/agents[-1].netWorth(market))
+			gradientC += np.exp(-500.*abs(distC)) * (a2.netWorth(market) - agent.netWorth(market)) * np.sign(distC) * (a2.netWorth(market)/agents[-1].netWorth(market))
+		agent.gradientI = gradientI / weightI
+		agent.gradientI *= (1. - 1.*i/N)
+		agent.gradientC = gradientC / weightC
+		agent.gradientC *= (1. - 1.*i/N)
+		if saveToFile != None:
+			scatterx.append(agent.influencability)
+			if OneD:
+				scattery.append(agent.gradientI)
+			else:
+				scattery.append(agent.conservativeness)
+			scatterc.append(agent.netWorth(market))
+
 	if saveToFile != None:
 		plt.figure()
 		plt.scatter(scatterx, scattery, c=scatterc)
@@ -59,7 +74,12 @@ def optimizeGradient(agents, market, saveToFile=None):
 
 	for agent in agents:
 		bef = agent.influencability
-		agent.influencability += normal (agent.gradient/2000., 0.2) #TODO BETTER
+		agent.influencability += normal (agent.gradientI/2000., 0.2)
+		if OneD:
+			agent.conservativeness = consFromInfl(agent.influencability)
+		else:
+			agent.conservativeness += consFromInfl (agent.gradientC/10000000., 0.2)
+
 		agent.conservativeness = (9. - agent.influencability) / 400.
 		
 

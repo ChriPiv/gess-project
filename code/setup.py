@@ -1,8 +1,8 @@
-from agent import Agent
+from agent import Agent, consFromInfl
 from market import Market
 from numpy.random import *
 
-def simulationSetup(N, P0, M0, A0):
+def simulationSetup(N, P0, M0, A0, OneD=False):
 	"""
 	Sets up the simulation objects.
 		N: 		Number of agents
@@ -24,8 +24,11 @@ def simulationSetup(N, P0, M0, A0):
 		# [0,0.1] for conservativeness
 		# so we link them by infl + 800*consvs = 4
 		# but we allow agents outside aswell
-		influencability = normal(5., 3.)#uniform(0., 4.)
-		conservativeness = (9. - influencability) / 400.
+		influencability = normal(5., 3.)
+		if OneD:
+			conservativeness = consFromInfl(influencability)
+		else:
+			conservativeness = normal(0.001, 0.0025)
 		agents.append(Agent(M0, A0, noisiness, influencability, conservativeness))
 
 	market = Market(P0)

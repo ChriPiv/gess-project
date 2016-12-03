@@ -10,7 +10,7 @@ N = 1000
 # Number of learning steps
 L = 500
 # Number of simulation steps (per learning process)
-T = 1000
+T = 3000
 # Initial asset price
 P0 = 100.
 # Initial money count of agents
@@ -25,20 +25,17 @@ def main():
 	if not os.path.exists('out/'):
 		os.makedirs('out/')
 
-	[agents, market] = simulationSetup(N, P0, M0, A0)
+	[agents, market] = simulationSetup(N, P0, M0, A0, OneD=True)
 
 	# Run simulation
 	for l in range(0, L):
+		print("Running learning step " + str(l) +"/" + str(L))
 		resetSimulation(agents, market, P0, M0, A0)
 		for t in range(0, T):
-			#saveDistributionToFile(agents, market, "dist" + str(i) + ".png")
 			simulationStep(agents, market)
-		print ("finished current simulation round")
 
-		saveStrategyDistributionToFile(agents, market, "dist" + str(l) + ".png")
-		# optimizeGradient(agents, market, saveToFile="gradient"+str(l)+".png")
-		# optimizeNaive(agents, market, saveToFile="wealth"+str(l)+".png")
-		optimizeMLS(agents, market, saveToFile="wealth"+str(l)+".png")
+		saveStrategyDistributionToFile(agents, market, "dist" + str(l) + ".png", OneD=True)
+		optimizeGradient(agents, market, saveToFile="gradient"+str(l)+".png", OneD=True)
 
 if __name__ == "__main__":
 	main()

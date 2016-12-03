@@ -3,7 +3,7 @@ from __future__ import print_function
 import numpy as np
 import matplotlib.pyplot as plt
 
-def saveStrategyDistributionToFile(agents, market, filename):
+def saveStrategyDistributionToFile(agents, market, filename, OneD=False):
 	val = []
 	infl = []
 	consv = []
@@ -11,24 +11,21 @@ def saveStrategyDistributionToFile(agents, market, filename):
 		val.append(a.assets*market.assetPrice + a.money)
 		infl.append(a.influencability)
 		consv.append(a.conservativeness)
-	## 1D:
-	plt.figure()
-	xstart = -10
-	xend = 20
-	bins = 30
-	plt.xlim([xstart, xend])
-	plt.ylim([0, 120])
-	edges = np.linspace(xstart, xend, bins+1);
-	plt.hist(infl, bins=edges)
-	plt.savefig("out/" + filename)
-	plt.close()
-	## 2D:
-	#plt.figure()
-	#plt.xlim([-10, 20])
-	#plt.ylim([-0.04, 0.05])
-	#sc = plt.scatter(infl, consv, c=val)
-	#plt.colorbar(sc)
-	#plt.savefig("out/" + filename)
+	if OneD:
+		plt.figure()
+		plt.xlim([-10, 20])
+		plt.ylim([0, 120])
+		plt.hist(infl, bins=30)
+		plt.savefig("out/" + filename)
+        plt.close()
+	else:
+		plt.figure()
+		plt.xlim([-10, 20])
+		plt.ylim([-0.04, 0.05])
+		sc = plt.scatter(infl, consv, c=val)
+		plt.colorbar(sc)
+		plt.savefig("out/" + filename)
+        plt.close()
 
 def saveMoneyDistributionToFile(agents, market, filename):
 	value = []
@@ -39,6 +36,7 @@ def saveMoneyDistributionToFile(agents, market, filename):
 	plt.ylim([0, 300])
 	plt.hist(value, bins=np.linspace(0, 150000, 60))
 	plt.savefig("out/" + filename)
+	plt.close()
 
 
 
