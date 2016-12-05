@@ -25,7 +25,7 @@ def saveStrategyDistributionToFile(agents, market, filename, OneD=False):
 		sc = plt.scatter(infl, consv, c=val)
 		plt.colorbar(sc)
 		plt.savefig("out/" + filename)
-        plt.close()
+		plt.close()
 
 def saveMoneyDistributionToFile(agents, market, filename):
 	value = []
