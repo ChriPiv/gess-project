@@ -40,8 +40,8 @@ def main():
 			simulationStep(agents, market)
 
 		serializeStrategyDistribution(agents, market, outdir + "dist" + str(l) + ".npz")
-		saveStrategyDistributionToFile(agents, market, outdir + "dist" + str(l) + ".png", OneD=True)
-		optimizeGradient(agents, market, saveToFile=outdir + "gradient"+str(l)+".png", OneD=True)
+		#saveStrategyDistributionToFile(agents, market, outdir + "dist" + str(l) + ".png", OneD=True)
+		optimizeGradient(agents, market, saveToFile=None, OneD=True)
 
 if __name__ == "__main__":
 	main()
