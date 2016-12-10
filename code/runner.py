@@ -12,14 +12,17 @@ for mean in np.linspace(2., 8., 7):
 startpoint = 0
 endpoint = len(setups)
 if len(sys.argv) > 1:
-	startpoint = int(argv[1])
+	startpoint = int(sys.argv[1])
 if len(sys.argv) > 2:
-	endpoint = int(argv[2])
+	endpoint = int(sys.argv[2])
 
 for i in range(startpoint, endpoint):
 	print("Running simulation " + str(i))
 	[mean, std] = setups[i]
-	os.system("python main.py "+str(mean)+" "+str(std))
+	a = os.system("python main.py "+str(mean)+" "+str(std))
+	if a > 0:
+		print("There was an error.")
+		sys.exit(1)
 	os.system("mv out out_"+str(i))
 
 
