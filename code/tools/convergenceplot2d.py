@@ -5,7 +5,7 @@ import os
 
 """
 Take a folder out_X as paramaters and converts the files disti.npz to a plot
-disti.png for i=0,...,499 (1D so histrogram with influencability) and makes
+disti.png for i=0,...,499 (2D so scatter with influenc. and conserv.) and makes
 a video of the evolution called video.mp4.
 """
 
@@ -21,13 +21,14 @@ for i in range(0, 300):
 	print("Prosessing file "+str(i)+"/300")
 	data = np.load(os.path.join(folder, "dist"+str(i)+".npz")) 
 	infl = data['infl']
+	consv = data['consv']
 	plt.figure(figsize=(12, 8))
-	plt.title(r'Agent Strategy Distribution Histogram')
+	plt.title(r'Agent Strategy Distribution')
 	plt.xlabel(r'Agent Influencability')
-	plt.ylabel(r'Frequency')
+	plt.xlabel(r'Agent Conservativeness')
 	plt.xlim([-3, 12])
-	plt.hist(infl, bins=np.linspace(-10, 20, 100))
-	plt.ylim([0, 250])
+	plt.ylim([-0.01, 0.04])
+	plt.scatter(infl, consv)
 	plt.savefig(os.path.join(folder, "dist"+str(i).zfill(3)+".png"))
 	plt.close()
 
