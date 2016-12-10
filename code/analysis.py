@@ -27,6 +27,19 @@ def saveStrategyDistributionToFile(agents, market, filename, OneD=False):
 		plt.savefig(filename)
 		plt.close()
 
+def serializeStrategyDistribution(agents, market, filename):
+	val = []
+	infl = []
+	consv = []
+	for a in agents:
+		val.append(a.netWorth(market))
+		infl.append(a.influencability)
+		consv.append(a.conservativeness)
+	val = np.asarray(val)
+	infl = np.asarray(infl)
+	consv = np.asarray(consv)
+	np.savez(filename, val=val, infl=infl, consv=consv)
+
 def saveMoneyDistributionToFile(agents, market, filename):
 	value = []
 	for a in agents:
