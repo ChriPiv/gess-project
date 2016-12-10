@@ -34,6 +34,7 @@ def main():
 	resetSimulation(agents, market, P0, M0, A0)
 	for t in range(0, T):
 		simulationStep(agents, market, buySellFilename.format(t), t)
+	savePriceHistoryToFile(market, outdir + 'price_history.png')
 
 
 

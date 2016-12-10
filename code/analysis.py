@@ -104,3 +104,25 @@ def plotStrategyDistribution(agents, market):
 		total_assets += agent.assets
 	#print("assets owned: ", total_assets)
 	#print("(at beginning it was 30000)")
+
+
+def savePriceHistoryToFile(market, filename):
+	"""
+	Plot the history of prices
+	agents: 	agents objects having gone through the simulation
+	market: 	market state at the end of the simulation
+	filename: 	file to save the plot
+	"""
+
+	# Plot price history
+	T = len(market.history)
+	time = np.linspace(0, T, T)
+	plt.figure()
+	plt.plot(time, market.history)
+	plt.ylim([0, 200])
+
+	plt.xlabel("Timestep")
+	plt.ylabel("Market price p*")
+	plt.title("Price Evolution Over Time")
+	plt.savefig(filename)
+	plt.close()
