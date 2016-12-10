@@ -38,4 +38,5 @@ class Market:
 
 		if len(self.history) > 2:
 			# TODO: i took theta arbitrarily (see paper)
-			self.priceMomentum = 0.8 * self.priceMomentum + 0.2 * (self.history[-1] / self.history[-2] - 1)
+			theta = 0.8
+			self.priceMomentum = theta * self.priceMomentum + (1.-theta) * (self.history[-1] / self.history[-2] - 1)
