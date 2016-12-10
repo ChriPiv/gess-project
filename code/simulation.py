@@ -254,14 +254,16 @@ def formOrders(buyers_by_price, sellers_by_price):
 		# some buyers or sellers could remain, choose randomly
 		if buy_price >= pstar:
 			total = sum_amount(buyers_by_price[buy_price])
-			num_to_choose = total - num_unmatched_buyers
-			sample = sample_amounts(buyers_by_price[buy_price], total, num_to_choose)
-			accepted_orders.extend([(agent, amount, buy_price) for (amount, agent) in sample])
+			if total > 0:
+				num_to_choose = total - num_unmatched_buyers
+				sample = sample_amounts(buyers_by_price[buy_price], total, num_to_choose)
+				accepted_orders.extend([(agent, amount, buy_price) for (amount, agent) in sample])
 		if sell_price <= pstar:
 			total = sum_amount(sellers_by_price[sell_price])
-			num_to_choose = total - num_unmatched_sellers
-			sample = sample_amounts(sellers_by_price[sell_price], total, num_to_choose)
-			accepted_orders.extend([(agent, amount, sell_price) for (amount, agent) in sample])
+			if total > 0:
+				num_to_choose = total - num_unmatched_sellers
+				sample = sample_amounts(sellers_by_price[sell_price], total, num_to_choose)
+				accepted_orders.extend([(agent, amount, sell_price) for (amount, agent) in sample])
 	else:
 		pstar = (buy_price + sell_price) / 2.
 		
