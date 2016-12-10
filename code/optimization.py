@@ -68,8 +68,18 @@ def optimizeGradient(agents, market, saveToFile=None, OneD=False):
 			scatterc.append(agent.netWorth(market))
 
 	if saveToFile != None:
-		plt.figure()
+		plt.rcParams.update({'font.size': 22})
+		plt.figure(figsize=(12,8))
+		plt.xlabel(r'Agent Influencability')
+		plt.ylabel(r'Agent Gradient')
+		plt.xlim([-3, 12])
+		plt.ylim([-3000, 3000])
 		plt.scatter(scatterx, scattery, c=scatterc)
+		cbar = plt.colorbar()
+		#cbar.set_ticks([0., np.ceil(max(scatterc))])
+		#cbar.set_ticklabels([0., np.ceil(max(scatterc))])
+		#cbar.set_label('Agent Wealth after Simulation', rotation=270)
+		cbar.set_label('Agent Wealth after Simulation')
 		plt.savefig(saveToFile)
 		plt.close()
 
