@@ -51,19 +51,20 @@ def optimizeGradient(agents, market, saveToFile=None, OneD=False):
 			if distC == 0.:
 				distC = float("inf")
 			weightI += np.exp(-abs(distI))
-			weightC += np.exp(-abs(distC))
+			weightC += np.exp(-500.*abs(distC))
 			gradientI += np.exp(-abs(distI)) * (a2.netWorth(market) - agent.netWorth(market)) * np.sign(distI) * (a2.netWorth(market)/agents[-1].netWorth(market))
-			gradientC += np.exp(-500.*abs(distC)) * (a2.netWorth(market) - agent.netWorth(market)) * np.sign(distC) * (a2.netWorth(market)/agents[-1].netWorth(market))
+			gradientC += np.exp(-abs(distC)) * (a2.netWorth(market) - agent.netWorth(market)) * np.sign(distC) * (a2.netWorth(market)/agents[-1].netWorth(market))
 		agent.gradientI = gradientI / weightI
 		agent.gradientI *= (1. - 1.*i/N)
 		agent.gradientC = gradientC / weightC
 		agent.gradientC *= (1. - 1.*i/N)
 		if saveToFile != None:
-			scatterx.append(agent.influencability)
 			if OneD:
+				scatterx.append(agent.influencability)
 				scattery.append(agent.gradientI)
 			else:
-				scattery.append(agent.conservativeness)
+				scatterx.append(agent.gradientI)
+				scattery.append(agent.gradientC)
 			scatterc.append(agent.netWorth(market))
 
 	if saveToFile != None:
@@ -78,9 +79,7 @@ def optimizeGradient(agents, market, saveToFile=None, OneD=False):
 		if OneD:
 			agent.conservativeness = consFromInfl(agent.influencability)
 		else:
-			agent.conservativeness += consFromInfl (agent.gradientC/10000000., 0.2)
-
-		agent.conservativeness = (9. - agent.influencability) / 400.
+			agent.conservativeness += normal (agent.gradientC/50000000., 8.e-6 )
 		
 
 def optimizeEvolutionary(agents, market):
