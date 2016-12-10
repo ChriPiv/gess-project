@@ -13,7 +13,16 @@ def clamp(x, minval, maxval):
 
 
 
-def simulationStep(agents, market):
+def simulationStep(agents, market, buySellFilename=None, timestep=None):
+	"""
+	Run a single step of simulation. This generates agent bids, performs price
+	formation, executes bids meeting the resultant price, and updates the market
+
+	agents: 	a list of agent objects
+	market: 	market state
+	buySellFilename:	optional. If not None, this plots and saves the buy/sell curve to a file.
+	timestep:	required only if buySellFilename is specified. used to timestamp the plot.
+	"""
 
 	N = len(agents)
 	# map from prices to lists of (amount, agent index)
@@ -54,8 +63,8 @@ def simulationStep(agents, market):
 	
 	pstar, accepted_orders = formOrders(buyers_by_price, sellers_by_price)
 		
-	# PLOT THE BUY/SELL ORDER CURVE
-	if False:
+	# save buy/sell order curves for a single run
+	if buySellFilename is not None:
 		plt.figure()
 		x = np.linspace(1., 200., 1000)
 		fx = np.linspace(1., 200., 1000)
@@ -82,8 +91,15 @@ def simulationStep(agents, market):
 		plt.plot(x, gx, label="sell orders")
 		# black line at pstar
 		plt.plot((pstar,pstar), (0, 500), 'k-')
-		plt.legend(loc="best")
-		plt.show()
+		plt.text(180, 38000, 't={}'.format(timestep))
+		plt.legend(loc="lower right")
+		plt.xlim([0, 200])
+		plt.ylim([0, 40000])
+		plt.xlabel("Bid price")
+		plt.ylabel("Number of bids")
+		plt.title("Buy and Sell Orders At Current Timestep")
+		plt.savefig(buySellFilename)
+		plt.close()
 	
 	market.setNewPrice(pstar)
 	#print("market price + momentum: ", pstar, market.priceMomentum)
