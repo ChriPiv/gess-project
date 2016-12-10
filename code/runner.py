@@ -19,10 +19,8 @@ if len(sys.argv) > 2:
 for i in range(startpoint, endpoint):
 	print("Running simulation " + str(i))
 	[mean, std] = setups[i]
-	a = os.system("python main.py "+str(mean)+" "+str(std))
+	a = os.system("python main.py out"+str(i)+" "+str(mean)+" "+str(std))
 	if a > 0:
 		print("There was an error.")
 		sys.exit(1)
-	os.system("mv out out_"+str(i))
-
 

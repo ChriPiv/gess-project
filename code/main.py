@@ -23,7 +23,7 @@ def main():
 	"""Main function of the simulation, containing simulation loop"""
 
 	# Create output directory if it doesn't already exist
-	if len(sys.argv) == 2:
+	if len(sys.argv) >= 2:
 		outdir = sys.argv[1]
 	else:
 		outdir = 'out/'

@@ -20,10 +20,10 @@ def simulationSetup(N, P0, M0, A0, OneD=False):
 	# Generate inital agents
 	for _ in range(0, N):
 		noisiness = 0.05
-		if len(sys.argv) > 1:
+		if len(sys.argv) > 2:
 			# override of initial parameters. useful for runner
-			mean = float(sys.argv[1])
-			std = float(sys.argv[2])
+			mean = float(sys.argv[2])
+			std = float(sys.argv[3])
 			influencability = normal(mean, std)
 		else:
 			influencability = normal(5., 3.)
