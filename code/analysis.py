@@ -16,7 +16,7 @@ def saveStrategyDistributionToFile(agents, market, filename, OneD=False):
 		plt.xlim([-10, 20])
 		plt.ylim([0, 120])
 		plt.hist(infl, bins=30)
-		plt.savefig("out/" + filename)
+		plt.savefig(filename)
 		plt.close()
 	else:
 		plt.figure()
@@ -24,7 +24,7 @@ def saveStrategyDistributionToFile(agents, market, filename, OneD=False):
 		plt.ylim([-0.04, 0.05])
 		sc = plt.scatter(infl, consv, c=val)
 		plt.colorbar(sc)
-		plt.savefig("out/" + filename)
+		plt.savefig(filename)
 		plt.close()
 
 def saveMoneyDistributionToFile(agents, market, filename):
@@ -35,7 +35,7 @@ def saveMoneyDistributionToFile(agents, market, filename):
 	plt.xlim([0, 150000])
 	plt.ylim([0, 300])
 	plt.hist(value, bins=np.linspace(0, 150000, 60))
-	plt.savefig("out/" + filename)
+	plt.savefig(filename)
 	plt.close()
 
 

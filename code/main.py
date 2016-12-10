@@ -1,4 +1,5 @@
 import os
+import sys
 
 from setup import *
 from simulation import *
@@ -22,8 +23,12 @@ def main():
 	"""Main function of the simulation, containing simulation loop"""
 
 	# Create output directory if it doesn't already exist
-	if not os.path.exists('out/'):
-		os.makedirs('out/')
+	if len(sys.argv) == 2:
+		outdir = sys.argv[1]
+	else:
+		outdir = 'out/'
+	if not os.path.exists(outdir):
+		os.makedirs(outdir)
 
 	[agents, market] = simulationSetup(N, P0, M0, A0, OneD=True)
 
@@ -34,8 +39,8 @@ def main():
 		for t in range(0, T):
 			simulationStep(agents, market)
 
-		saveStrategyDistributionToFile(agents, market, "dist" + str(l) + ".png", OneD=True)
-		optimizeGradient(agents, market, saveToFile="gradient"+str(l)+".png", OneD=True)
+		saveStrategyDistributionToFile(agents, market, outdir + "dist" + str(l) + ".png", OneD=True)
+		optimizeGradient(agents, market, saveToFile=outdir + "gradient"+str(l)+".png", OneD=True)
 
 if __name__ == "__main__":
 	main()

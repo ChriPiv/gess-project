@@ -26,7 +26,7 @@ def optimizeNaive(agents, market, saveToFile=None):
 		plt.scatter(influencability, conservativeness, c=wealth)
 		plt.xlabel("influencability")
 		plt.ylabel("conservativeness")
-		plt.savefig("out/" + saveToFile)
+		plt.savefig(saveToFile)
 
 def optimizeGradient(agents, market, saveToFile=None, OneD=False):
 	agents = sortAgents(agents, market)
@@ -69,7 +69,7 @@ def optimizeGradient(agents, market, saveToFile=None, OneD=False):
 	if saveToFile != None:
 		plt.figure()
 		plt.scatter(scatterx, scattery, c=scatterc)
-		plt.savefig("out/" + saveToFile)
+		plt.savefig(saveToFile)
 		plt.close()
 
 	for agent in agents:
@@ -123,7 +123,7 @@ def optimizeMLS(agents, market, saveToFile=None):
 	if saveToFile != None:
 		plt.figure()
 		plt.scatter(influencabilities, gradients, c=assetPrices)
-		plt.savefig("out/" + saveToFile)
+		plt.savefig(saveToFile)
 
 	learningRate = 1./2000.
 	for agent in agents:
