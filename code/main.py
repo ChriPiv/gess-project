@@ -9,7 +9,7 @@ from optimization import *
 # Number of agents
 N = 1000
 # Number of learning steps
-L = 500
+L = 300
 # Number of simulation steps (per learning process)
 T = 3000
 # Initial asset price
