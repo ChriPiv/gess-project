@@ -24,7 +24,7 @@ def main():
 
 	# Create output directory if it doesn't already exist
 	if len(sys.argv) >= 2:
-		outdir = sys.argv[1]
+		outdir = sys.argv[1] + '/'
 	else:
 		outdir = 'out/'
 	if not os.path.exists(outdir):
