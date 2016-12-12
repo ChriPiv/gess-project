@@ -81,18 +81,45 @@
 
 
 \section{Abstract}
+An agent-based model is designed to simulate trading dynamics of a financial market. The behaviour of the individual agents is determined by three parameters: conservativeness, influencability and noisiness. This parameter space allows one to produce agent behaviour that can mimic a continuous range of strategy such as  momentum traders or noise traders. Price formation is done by considering buy and sell orders (TODO HOW IS THIS CALLED). Finally multiple learning strategies are analyzed in order to optimize the strategy distribution of the agents with the fitness function being the total wealth of an agent after a set amount of time steps of the simulation. As the optimization process is very complex, we reduce our paramater space to first one and two dimensions. In one dimension the strategy distribution converges stably to a characteristic distribution using a heuristic gradient estimation method we developed.
 
 \section{Individual contributions}
 
 \section{Introduction and Motivations}
 
 \section{Description of the Model}
+Descrtiption of simulation: see github
+Description of MLS: DANIEL
+Description of naive/heuristic: CHRISTOPHE
 
 \section{Implementation}
+DANIEL
 
 \section{Simulation Results and Discussion}
+for simulation: DANIEL
+* price formation: buy+sell curves
+* price evolution: show graph
+* justification of model: return evolution, show fat tail distribution
+
+for optimization: CHRISTOPHE
+* MLS is nice, but slow. heuristic gradient is faster! yay!
+  -> show a few gradient plots to give an idea how it looks like
+  -> show mls evolution , slow convergence
+  -> show heuristic evolution, fast convergence
+* reduction to 1D: showing 2d computationally too expensive, didnt converge
+  -> show 2d evolution
+* Convergence process video for presentation
+* Redo convergence proces with one set of initial parameters multiple times to assure reproducability
+* Run all the simulations for different ic -> fit gaussian curves, get sample of means and stdevs, statistics of those sets
+  -> assure stability
 
 \section{Summary and Outlook}
+CHRISTOPHE
+* 1D is an arbitrary restriction. 2D would be much more interesting, but computationally more expensive
+* MLS better, computationally more expensive
+* noisiness as third dimension, computationally more expensive
+* use real market data, our agents as subsets (removing one social aspect, but relatable predictionf for real life)
+* optimization problem, but two kirks: stochastic and function to optimize changes all the time. Maybe different approaches?
 
 \section{References}
 
