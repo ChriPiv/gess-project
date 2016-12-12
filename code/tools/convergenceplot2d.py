@@ -17,8 +17,8 @@ folder = os.path.abspath(sys.argv[1])
 
 plt.rcParams.update({'font.size': 22})
 
-for i in range(0, 300):
-	print("Prosessing file "+str(i)+"/300")
+for i in range(0, 1000):
+	print("Prosessing file "+str(i)+"/1000")
 	data = np.load(os.path.join(folder, "dist"+str(i)+".npz")) 
 	infl = data['infl']
 	consv = data['consv']

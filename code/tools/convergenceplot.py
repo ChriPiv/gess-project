@@ -22,7 +22,7 @@ for i in range(0, 300):
 	data = np.load(os.path.join(folder, "dist"+str(i)+".npz")) 
 	infl = data['infl']
 	plt.figure(figsize=(12, 8))
-	plt.title(r'Agent Strategy Distribution Histogram')
+	plt.title(r'Agent Strategy Distribution Histogram after '+str(i)+' timesteps')
 	plt.xlabel(r'Agent Influencability')
 	plt.ylabel(r'Frequency')
 	plt.xlim([-3, 12])
