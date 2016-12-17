@@ -23,9 +23,9 @@ for i in range(0, 1000):
 	infl = data['infl']
 	consv = data['consv']
 	plt.figure(figsize=(12, 8))
-	plt.title(r'Agent Strategy Distribution')
+	plt.title(r'Agent Strategy Distribution after '+str(i)+' timesteps')
 	plt.xlabel(r'Agent Influencability')
-	plt.xlabel(r'Agent Conservativeness')
+	plt.ylabel(r'Agent Conservativeness')
 	plt.xlim([-3, 12])
 	plt.ylim([-0.01, 0.04])
 	plt.scatter(infl, consv)
