@@ -85,12 +85,77 @@ We present an agent-based model designed to simulate trading dynamics of a finan
 }
 \newline
 
-\section{Individual contributions}
+\section{Individual Contributions}
 
 \section{Introduction and Motivations}
+\subsection{Financial Actor Behaviour}
+
+Due to the hyper-competitive nature of financial markets and their near-instantaneous price adjustments, prominent academics assumed that individual rationality in decision making leads to efficient price outcomes \citep{zeckhauser1991nonrational}. This theory is known as the Efficient Market Hypothesis (EMH), which assumes all market information is incorporated at the price, hence assets trade at their intrinsic value and `beating the market' becomes impossible. \\
+Under such conditions, since all agents are perfectly informed, picking undervalued stocks via fundamental (relating to macroeconomic factors) or technical (depending on price movement and volume of past trading activity) market analysis is redundant. \\
+An EHM proponent is likely to invest in an index fund instead of a growth stock (e.g. a tech company). Although consensus about the efficiency of markets has yet to be reached, people started disbelieving the ‘rationality of the markets’ especially after the 2007-09 crisis. This perspective suggests that external market factors, such as asset prices and price-influence-chosen trading strategies, are the underlying behavioural parameters. This warrents the investigation of varied agents and their effect on the market. \\
+
+\subsection{The Case for Simulation}
+The importance of understanding the dynamics in a financial market and the parameters that determine investor behaviour is manifested in the various policy efforts that seek to maintain integrity in the financial system.\\
+For instance, in order to secure market confidence, regulate foreign participation and prevent collusion, policy makers have become increasingly interested in identifying dominant trading strategies and the social effects that level the playing field. The market composition plays a significant role in the predictive analysis as it is likely to exacerbate inherent financial dynamics. Examples are the speculative bubbles experienced in 2000 and 2007 as observed by \citet{kaizoji2015super}. \\
+One of the earliest works similar to this project is \citet{de1990noise}, which uses an agent-based economic model. Further related works that use the same model have mostly investigated emerging market characteristics (formation of demand/supply or characteristic price formation). Since the agent-based model has proven its usefulness in modelling market characteristics we feel comfortable to adopt and expand the proposed model in order to study how emergent market characteristics propagate back to the agent as in how they adapt their strategies.
 
 \section{Description of the Model}
-Descrtiption of simulation: see github
+
+\subsection{Market Conditions and Trading Mechanism}
+We use an agent-based model closely based on \citet{raberto2001agent} to simulate a financial market with a clearing house price formation mechanism. Our main objective is to understand the changes in agent decision-making features due to learning processes and their market environment. \\
+At the start of the simulation wealth and assets are normally distributed among heterogenous agents. We adopted the assumption that agents are endowed with a finite amount of wealth to purchase a finite amount of assets, which enacts realistic constraints on agents' decision-making. \\
+The base structure of our model is an artificial financial market where agents trade a type of risk-free assets at the end of each of the 1000 trading periods per simulation step. In this market at every trading interval a fixed number of bidders and seller simultaneously place their limit orders at their individual limit prices. Limit prices are prices specified by the agents at which assets are marketed, but where transactions may not be executed if the market price set by investors is not met during the trading period in which the order is left open. At the intersection of demand and supply the market price is formed and the market is cleared for transactions as described in further detail in the following paragraphs. \\
+The amount of total traded assets per time step is computed by aggregating individual orders. Each agent considers how many assets she wants to own in the following time step. This value is drawn from a normal distribution with mean $\mu_S$ and standard deviation $\sigma_S$:
+\begin{equation}
+\mu_S = \text{currentAmountOfAssets} * (1 + (\text{marketPrice} - \text{meanMarketPriceOverNTimesteps}) * \text{agentConservativeness} + \text{priceMomentum} * \text{agentInfluencability}, \sigma_S = \text{agentNoisiness})
+\end{equation}
+We see that $\mu_S$ starts out to be around the current amount of assets of the agent. There are two forces influencing $\mu_A$: If the market price is higher(lower) than the average in recent history, then the agent is more likely to sell(buy). If a lot of people are buying(selling) and thus the market price momentum is high(low) the agent is more likely to buy(sell). These two forces are weighted by two agent parameters: its conservativeness and its influencability. A third parameter governs the behaviour of our agents, namely  noisiness.\\
+Finally the order price is also taken from a normal distribution with mean $\mu_P$ and standard deviation $\sigma_P$:
+
+\begin{equation}
+\mu_P = 0.99 * \text{currentAssetPrice} \text{if the agent is buying}
+\end{equation}
+\begin{equation}
+\mu_P = 1.01 * \text{currentAssetPrice} \text{if the agent is selling}
+\end{equation}
+\begin{equation}
+\sigma_P = \text{const} * \text{marketVolatility}
+\end{equation}
+
+After agents place their bids, the model undergoes price formation. As with [1], we would like to find a market clearing price price p* for which the highest number of bids can be satisfied. Specifically, we would like the total amount of sell bids below the price to be equal to the total amount of buy bids above the price. Given a sorted list of buy and sell orders, this can be performed in linear time by using a two-pointer implementation. We iterate from the lowest-priced sell order and from the highest-priced buy order, matching pairs of orders as we go, until the current buy price is less than the current sell price. In the case that more satisfiable buy orders exist than sell orders (or vice-versa), the successful bids are chosen randomly. All orders are then executed at p*, the average of the highest matched sell order and lowest matched buy. Then the next timestep starts and the process repeats. \\
+We conducted three experiments, one for each learning strategy. For each experiment we ran multiple simulations, where each initiation starts with the same initial conditions, i.e. type of traders, asset and wealth distribution.  The beginning of each period initialises the agents’ endowments of money and assets, which are normally distributed, and the state of nature. Information about the states of nature is publicly available to all agents, such as…?Borrowing and short selling is prohibited and agents cannot exceed their budget constraint at any point in time. Furthermore, there is no mechanism for money creation.\\
+
+\subsection{Agents}
+The design of our agents closely follows XYZ’s (author) traders, which uses XX heuristic to give us an understanding of how agent parameters change and interact in market phenomena. Simple heuristics allow us to examine the interactions among and within agent parameters and how trading strategies change over time. \\
+In our model all agents are risk neutral and seek to maximise their end-of-trading-period wealth and the expected value of their portfolio. For this end they choose between cash and wealth and only buy assets when the clearing price is low in relation to their mean (vice verca sell when the price is high in relation to their mean.) \\
+We do not model utility functions, but preferences for assets occur due to differences in the influencability of market factors and conservatieness… \\
+Agents submit orders in the same manner, outlined above , but differ in the way they determine the expected value of the asset, which we call the ‘base price’ (the fundamental cost of the asset to the trader).  \\
+There is a continuous set of types of agents with a normal distribution of agent parameters, which also determines how they form their forecast. Traders can vary along the spectrum of influencability and conservativeness, which means… This agent design is inspired by the differences in fundamentalist and technical traders, which trade according to…., respectively. F use… they form their base price by… and aim to buy or sell if the base price is higher or lower than the market determined asset price, which signifies an under- or overvalued stock from their point of view. These traders continuously monitor market activities, update their parameters and adust their trading position accordingly. Their trading activities come to an end when they outspend their budget constraint or … \\
+Technical traders use the current time periods and past return values as a proxy measure for future returns. (e.g. if at time t the two most recent transaction prices are pt and pt1, then a momentum trader's forecast of the next transaction price is simply pt (pt=pt1).  \\
+- wealth is reseat after every learning step to initial wealth distribution. Because if you don't do this then agents that are bad at the bedinning are bad forever and have no change to improve. 
+Learning	
+MLS
+Gradient
+Naive
+- Agents undergo ten learning steps in our model. 
+
+Agents also undergo a learning process. The model is run for a specific number of time steps, then a ranking of the agents is done considering their final owned wealth. Depending on how successful each agent was in that ranking, she will adapt her parameters: A successful agent will only slightly change its parameters, while less successful agents will vary them more strongly.
+
+In order to create the optimization algorithms of our agents we approximate a continuously differentiable function using the Moving Least Squares (MLS) method. For this we approximate a continuous function from the scattered point sample of our agents’ influencability/wealth distribution by calculating weighted least squares (WLS) measures from an arbitrary point in the parameter space. We use a Gaussian weighting evaluated at neighbouring points and normalised by their sum. The selected point is consequently moved over all agent positions in the parameter domain, a local linear fit computed and individually evaluated for each point of the sample. 
+
+FORMULA
+
+We decided to use this method as it this method successfully interpolates emerging data 
+as was originally suggested by \citet{lancaster1981surfaces}. 
+
+MLS converges very slowly, so we use more heuristics (here it converges faster with 1D). so now that it converges faster we see how it works in 2D. But it takes too much computational power. Interesting for future research. 
+
+
+
+
+
+
+
 Description of MLS: DANIEL
 
 Another optimization approach is one we developed and call Heuristic Gradient. It calculates a gradient that has no mathematical meaning, but is rather a quantity that heuristically represents in which direction the agent will want to move in order to imitate more successfull agents. \\
@@ -226,7 +291,9 @@ There are however still many areas that warrant further investigation of our mod
 
 
 \section{References}
-
+% load bibliography.bib
+\bibliographystyle{abbrvnat}
+\bibliography{bibliography}
 
 
 
