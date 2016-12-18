@@ -3,7 +3,12 @@ from __future__ import print_function
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def saveStrategyDistributionToFile(agents, market, filename, OneD=False):
+	"""
+	Saves the strategy distribution of the agents into a nice plot.
+	"""
+
 	val = []
 	infl = []
 	consv = []
@@ -28,6 +33,11 @@ def saveStrategyDistributionToFile(agents, market, filename, OneD=False):
 		plt.close()
 
 def serializeStrategyDistribution(agents, market, filename):
+	"""
+	Saves the strategy distribution of the agents in binary format. Allows
+	later analysis with our tools.
+	"""
+
 	val = []
 	infl = []
 	consv = []
@@ -40,7 +50,12 @@ def serializeStrategyDistribution(agents, market, filename):
 	consv = np.asarray(consv)
 	np.savez(filename, val=val, infl=infl, consv=consv)
 
+
 def saveMoneyDistributionToFile(agents, market, filename):
+	"""
+	Plots money distribution histogram to a file.
+	"""
+
 	value = []
 	for a in agents:
 		value.append(a.assets*market.assetPrice + a.money)
@@ -50,7 +65,6 @@ def saveMoneyDistributionToFile(agents, market, filename):
 	plt.hist(value, bins=np.linspace(0, 150000, 60))
 	plt.savefig(filename)
 	plt.close()
-
 
 
 def plotStrategyDistribution(agents, market):

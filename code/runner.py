@@ -2,6 +2,11 @@ import numpy as np
 import sys
 import os
 
+"""
+Test runner for our different initial conditions. Usage:
+runner.py <start> <end>
+"""
+
 # All the initial setups we want to try
 setups = []
 for mean in np.linspace(2., 8., 7):

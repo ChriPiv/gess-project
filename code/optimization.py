@@ -8,6 +8,11 @@ import sys
 from agent import consFromInfl
 
 def optimizeNaive(agents, market, saveToFile=None):
+	"""
+	Naive learning method: Agents don't imitate each other but just vary
+	their parameters randomly.
+	"""
+
 	agents = sortAgents(agents, market)
 	N = len(agents)
 	for i in range(0, N):
@@ -29,6 +34,9 @@ def optimizeNaive(agents, market, saveToFile=None):
 		plt.savefig(saveToFile)
 
 def optimizeGradient(agents, market, saveToFile=None, OneD=False):
+	"""
+	Heuristic Gradient learning algorithm.
+	"""
 	agents = sortAgents(agents, market)
 	N = len(agents)
 
@@ -93,9 +101,13 @@ def optimizeGradient(agents, market, saveToFile=None, OneD=False):
 		
 
 def optimizeEvolutionary(agents, market):
+	# TODO?
 	return
 
 def optimizeMLS(agents, market, saveToFile=None):
+	"""
+	Implementation of MLS learning algorithm.
+	"""
 
 	sigma = np.asarray([2, 1])
 	D = 1
@@ -140,8 +152,8 @@ def optimizeMLS(agents, market, saveToFile=None):
 		agent.influencability += learningRate*agent.gradient
 		agent.conservativeness = (9. - agent.influencability) / 400.
 
-"""
-return agent array sorted by their wealth, ascending 
-"""
 def sortAgents(agents, market):
+	"""
+	return agent array sorted by their wealth, ascending 
+	"""
 	return sorted(agents, key=lambda a:[a.money+a.assets*market.assetPrice])

@@ -6,7 +6,8 @@ import sys
 import os
 
 """
-Take a npz file as parameter
+Take a npz file as parameter. Fit a gaussian distribution to its
+agent influencability distribution and print mean+std.
 """
 
 

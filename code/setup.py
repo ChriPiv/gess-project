@@ -41,6 +41,11 @@ def simulationSetup(N, P0, M0, A0, OneD=False):
 
 
 def resetSimulation(agents, market, P0, M0, A0):
+	"""
+	Reset of simulation after learning step is complete an next simulation
+	is about to be run.
+	"""
+
 	for agent in agents:
 		agent.money = M0
 		agent.assets = A0
