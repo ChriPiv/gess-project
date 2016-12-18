@@ -93,7 +93,7 @@ We present an agent-based model designed to simulate trading dynamics of a finan
 \newpage
 
 \section{Individual Contributions}
- The development and implementation of the financial market model was performed in a process of group work where all members participated. Isabella Susnjara additionally investigated and analyzed the economic background of the project. Daniel Keyes leveraged his computer vision and machine learning background to implement the MLS optimization method, while Christophe Piveteau mainly focused on the development of the Heuristic Gradient method.
+ The development and implementation of the financial market model was performed in a process of group work where all members participated. Isabella Susnjara additionally investigated and analysed the economic background of the project. Daniel Keyes leveraged his computer vision and machine learning background to implement the MLS optimisation method, while Christophe Piveteau mainly focused on the development of the Heuristic Gradient method.
 
 \section{Introduction and Motivations}
 \subsection{Financial Actor Behaviour}
@@ -122,7 +122,7 @@ H_t = \theta H_{t-1} + (1 - \theta)(\frac{p^*_t}{p^*_{t-1}} - 1)
 \end{equation}
 where $\theta$ controls the horizon of the weighted average. We use $\theta=0.8$, corresponding approximately to a 5-timestep window. \\
 We see that $\mu_{A_i}$ remains at the current owned amount if both agent parameters are $0$. Otherwise, the conservativeness and influenceability forces affect agent behaviour. If the market price is higher (or lower) than the intrinsic price, then the agent is more likely to sell (or buy, respectively) based on conservativeness. If many agents have been buying (or selling) and thus the market price momentum is high (or low) the agent is more likely to buy (or sell), according to influenceability.\\
-In this way, conservativeness describes an agent's belief that prices exhibit mean reversion, akin to fundamentalist trading, and influenceability describes an agent's belief in trend-following behavior, akin to chartist trading. \\
+In this way, conservativeness describes an agent's belief that prices exhibit mean reversion, akin to fundamentalist trading, and influenceability describes an agent's belief in trend-following behaviour, akin to chartist trading. \\
 Finally the exact order price is also taken from a normal distribution distributed as $\mathcal{N}(\mu_{P_i}, \sigma_{P_i})$, where:
 
 \begin{equation}
@@ -136,7 +136,7 @@ Finally the exact order price is also taken from a normal distribution distribut
 \end{equation}
 
 After agents place their bids, the model undergoes price formation. As with [1], we would like to find a market clearing price price $p^*$ for which the highest number of bids can be satisfied. Specifically, we would like the total amount of sell bids below the price to be equal to the total amount of buy bids above the price. Given a sorted list of buy and sell orders, this can be performed in linear time by using a two-pointer implementation. We iterate from the lowest-priced sell order and from the highest-priced buy order, matching pairs of orders as we go, until the current buy price is less than the current sell price. In the case that more satisfiable buy orders exist than sell orders (or vice-versa), the successful bids are chosen randomly. All orders are then executed at $p^*$, the average of the highest matched sell order and lowest matched buy. Then the next timestep starts and the process repeats. \\
-We perform repeated bidding and price formation, until the distribution of agent wealth changes relatively little. In practice, we simply repeated the process $T=3000$ times. At this point, agents undergo social learning to adjust their individual parameters, and the entire process is repeated. \\
+We perform repeated bidding and price formation, until the distribution of agent wealth changes relatively little. In practise, we simply repeated the process $T=3000$ times. At this point, agents undergo social learning to adjust their individual parameters, and the entire process is repeated. \\
 
 \subsection{Learning}
 
@@ -244,7 +244,7 @@ Running MLS turns out to be computationally very expensive. The amount of time s
 Additionally it was decided to reduce the agent parameter space to one dimension, as 2D (or even 3D simulation if the agent noisiness is not fixed) simulations need more learning steps and/or lower learning parameter. This can be seen in figure \ref{fig:2dsimulation} where a 2D simulation was run for 1000 learning steps. Even though the shrinking shape of the agent parameter distribution suggests that it would converge at some point, that point is still not reached after 1000 learning steps. \\
 To reduce the parameter space to 1D we bind influenceability and conservativeness with following equation: 
 \begin{equation}
-  \text{conservativeness} = \frac{9 - \text{influencability}}{400}
+  \text{conservativeness} = \frac{9 - \text{influenceability}}{400}
 \end{equation}
 \begin{figure}
   \centering
@@ -276,7 +276,7 @@ The simulation is therefore ran 10 times with the same initial distribution of a
   $\mu_{conv} = 4.07\pm 0.03$ \\
   $\sigma_{conv} = 0.53\pm 0.02$
 \end{center}
-The deviations being so small indicate a high reproducability of the result. This gives us an idea of the uncertainty of the simulation result given an initial set of agents. This is very useful when one wants to investigate the dependence of the simulation result on the initial agent parameter distribution as we will below. \\
+The deviations being so small indicate a high reproducibility of the result. This gives us an idea of the uncertainty of the simulation result given an initial set of agents. This is very useful when one wants to investigate the dependence of the simulation result on the initial agent parameter distribution as we will below. \\
 \hfill \\
 35 Different simulations were run for different initial agent strategy distributions. The distributions were chosen to be normal with the mean and standard deviation being all possible permutations of $\mu=2,3,4,5,6,7,8$ and $\sigma=1,2,3,4,5$. Some of those initial distributions can be seen in figure \ref{fig:initialconditions}. They span the complete sensible space of agent parameters: Markets with high amount of agents with negative influenceability start producing nonsensical behaviour, as most agents try to do the opposite of all other agents. Similarly markets with many agents with influenceability larger than 15 were observed to crash quickly, as price immediately fell down to zero or skyrocketed to unreasonable values. \\
 \begin{figure}
