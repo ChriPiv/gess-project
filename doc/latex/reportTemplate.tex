@@ -167,7 +167,7 @@ w^{*} &= \argmin_w E(\tilde{X}; w) \\
 
 Because this gives a linear function, the local gradient is simply the first $D$ elements of $w^*$. We can use this approximate gradient $G_i = (w^*_1, w^*_2, \ldots w^*_D)$ to find a local optimum, as described in the following section.
 
-\subsubsection{ Heuristics for Gradient Ascent}
+\subsubsection{Heuristics for Gradient Ascent}
 
 Another optimisation approach is one we developed and call Heuristic Gradient. It calculates a gradient that has no mathematical meaning, but is rather a quantity that heuristically represents in which direction the agent will want to move in order to imitate more successfull agents. \\
 We enumerate our agents with the index $i$ for $i=1,...,N$. Without loss of generality we assume $N$ to be the most successfull agent and $1$ to be the least successfull agent (with regard to the total wealth owned after a simulation). We denote the net wealth of an agent $i$ as $W_i$. We consider an agent parameter $X_i$ which might for example be the influencability or the conservativeness. The gradient for all parameters is computed separately and thus we only cover the optimisation of one such agent parameter. \\
