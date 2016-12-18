@@ -2,7 +2,7 @@
 
 > * Group Name: Council of Rivendell 
 > * Group participants names: Daniel Keyes, Isabella Marquez, Christophe Piveteau
-> * Project Title: Analyzing Convergence Behaviour of Strategy Distributions in an Agent-Based Financial Market Simulation with Learning Agents
+> * Project Title: Learning in Simulated Agent-based Financial Markets
 
 ## General Introduction
 
@@ -20,7 +20,7 @@ We use an agent-based model losely based on [1] to simulate a financial market. 
 This amount is computed in the following way: The agent considers how many assets it wants to own next timestep. This value is drawn from a normal distribution with mean <i>mu<sub>S</sub></i> and standard deviation <i>sigma<sub>S</sub></i>:<br/>
 <i>mu<sub>S</sub></i> = currentAmountOfAssets * (1 + (marketPrice - meanMarketPriceOverNTimesteps) * agentConservativeness + priceMomentum * agentInfluencability)<br/>
 <i>sigma<sub>S</sub></i> = agentNoisiness<br />
-We see that <i>mu<sub>S</sub></i> starts out to be around the current amount of assets of the agent. There are two force influencing <i>mu<sub>A</sub></i>: If the market price is higher(lower) than the average in recent history, then the agent is more likely to sell(buy). If a lot of people are buying(selling) and thus the market price momentum is high(low) the agent is more likely to buy(sell). These two forces are weighted by two agent parameters: its conservativeness and its influencability.
+We see that <i>mu<sub>S</sub></i> starts out to be around the current amount of assets of the agent. There are two forces influencing <i>mu<sub>A</sub></i>: If the market price is higher(lower) than the average in recent history, then the agent is more likely to sell(buy). If a lot of people are buying(selling) and thus the market price momentum is high(low) the agent is more likely to buy(sell). These two forces are weighted by two agent parameters: its conservativeness and its influencability.
 A third parameter governs the behaviour of our agent: its noisiness.
 
 Finally the order price is also taken from a normal distribution with mean <i>mu<sub>P</sub></i> and standard deviation <i>sigma<sub>P</sub></i>:<br/>
@@ -30,7 +30,7 @@ Finally the order price is also taken from a normal distribution with mean <i>mu
 
 After agents place their bids, the model undergoes price formation. As with [1], we would like to find a market clearing price price <i>p\*</i> for which the highest number of bids can be satisfied. Specifically, we would like the total amount of sell bids below the price to be equal to the total amount of buy bids above the price. Given a sorted list of buy and sell orders, this can be performed in linear time by using a two-pointer implementation. We iterate from the lowest-priced sell order and from the highest-priced buy order, matching pairs of orders as we go, until the current buy price is less than the current sell price. In the case that more satisfiable buy orders exist than sell orders (or vice-versa), the successful bids are chosen randomly. All orders are then executed at <i>p\*</i>, the average of the highest matched sell order and lowest matched buy. Then the next timestep starts and the process repeats.
 
-Agents also undergo a learning process. The model is run for a specific number of time steps, then a ranking of the agents is done considering their final owned wealth. Depending on how successfull each agent was in that ranking, it will adapt its parameters: A successfull agent will only slightly change its parameters, while less successfull agents will vary them more strongly.
+Agents also undergo a learning process. The model is run for a specific number of time steps, then a ranking of the agents is done considering their final owned wealth. Depending on how successfull each agent was in that ranking, it will adapt its parameters: A successfull agent will only slightly change its parameters, while less successfull agents will vary them more strongly. An imitation process is also used as agents vary their parameters following an estimated fitness gradient. Multiple methods of estimating the gradient are analyzed.
 
 As this convergence process could be extremely complex, we will first start out by reducing our agent paramaters to one dimension. We will fix the agent noisiness to be constant for all agents and tie conservativeness and influencability together:<br />
 conservativeness = C - influencability, with C being a constant<br />
@@ -68,4 +68,4 @@ Thus we expect to find a confined subspace of the agent parameter space in which
 
 ## Research Methods
 
-We will run our agent-based simulations for long periods of time and analyze the convergens of the strategy distribution.
+We will run our agent-based simulations and learning steps for long periods of time and analyze the convergens of the strategy distribution.
