@@ -9,6 +9,8 @@
 \usepackage{amssymb, amsmath}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
+\DeclareMathOperator*{\argmin}{arg\,min}
+
 %\title{Title}
 %\author{Name 1, Name 2}
 %\date{date} 
@@ -108,61 +110,63 @@ One of the earliest works similar to this project is \citet{de1990noise}, which 
 
 \subsection{Market Conditions and Trading Mechanism}
 We use an agent-based model closely based on \citet{raberto2001agent} to simulate a financial market with a market-clearing price formation mechanism. Our main objective is to understand the evolution of market dynamics as agent strategies change due to social learning among agents. \\
-At the start of the simulation, wealth and assets are uniformly distributed among agents, who have heterogenous strategies. We adopted the assumption that the market comprising these agents is endowed with a finite amount of wealth and assets, which enacts realistic constraints on agents' decision-making. \\
+At the start of the simulation, wealth and assets are uniformly distributed among agents, who have heterogenous strategies. Their strategies are defined by three agent parameters, which we refer to as conservativeness $C_i$, influentiability $I_i$, and noisiness $N_i$ for agent $i$. We adopted the assumption that the market comprising these agents is endowed with a finite amount of wealth and assets, which enacts realistic constraints on agents' decision-making. \\
 The base structure of our model is an artificial financial market where agents trade an asset in each of $T$ trading periods per simulation. At every trading interval, agents choose to either buy or sell, and they simultaneously place limit orders at individual limit prices. Limit prices are prices specified by the agents at which assets are marketed, but where transactions may not be executed if the market price set by investors is not met during the trading period. This induces a demand and supply curve. The market clearing price is computed at the intersection of demand and supply, and admissible transactions are cleared as described in further detail in the following paragraphs. \\
-The amount of total traded assets per time step is computed by aggregating individual orders. Each agent considers how many assets she wants to own in the following time step. This value is drawn from a normal distribution with mean $\mu_S$ and standard deviation $\sigma_S$:
+The amount of total traded assets per time step is computed by aggregating individual orders. Each agent considers how many assets she wants to own in the following time step, denoted $A_i$. This value is drawn from a normal distribution with mean $\mu_A$ and standard deviation $\sigma_{A_i}$:
+\begin{equation}
+\mu_{A_i} = \text{currentAssetCount}_i * (1 + (\tilde{p} - p^{*}) C_i + H I_i)
+\end{equation}
+where $\tilde{p}$ is some measure of the intrinsic market price (we assume a constant $\tilde{p}=100$), $p^*$ is the last announced market clearing price, and $\sigma_{A_i}$ is simply the ``noisiness'' parameter of the agent (we fix $\sigma_{A_i} = 0.05$ for all agents in our simulation). $H$ is the price momentum, defined as a as in \citet {kaizoji2015super}:
+\begin{equation}
+H_t = \theta H_{t-1} + (1 - \theta)(\frac{p^*_t}{p^*_{t-1}} - 1)
+\end{equation}
+where $\theta$ controls the horizon of the weighted average. We use $\theta=0.8$, corresponding approximately to a 5-timestep window. \\
+We see that $\mu_{A_i}$ remains at the current owned amount if both agent parameters are $0$. Otherwise, the conservativeness and influentiability forces affect agent behaviour. If the market price is higher (or lower) than the intrinsic price, then the agent is more likely to sell (or buy, respectively) based on conservativeness. If many agents have been buying (or selling) and thus the market price momentum is high (or low) the agent is more likely to buy (or sell), according to influentiability.\\
+In this way, conservativeness describes an agent's belief that prices exhibit mean reverstion, akin to fundamentalist trading, and influentiability describes an agent's belief in trend-following behavior, akin to chartist trading. \\
+Finally the exact order price is also taken from a normal distribution distributed as $\mathcal{N}(\mu_{P_i}, \sigma_{P_i})$, where:
 
 \begin{equation}
-\mu_S = \text{currentAmountOfAssets} * (1 + (\text{marketPrice} - \text{meanMarketPriceOverNTimesteps}) * \text{agentConservativeness} + \text{priceMomentum} * \text{agentInfluencability}, \sigma_S = \text{agentNoisiness})
-\end{equation}
-We see that $\mu_S$ starts out to be around the current amount of assets of the agent. There are two forces influencing $\mu_A$: If the market price is higher(lower) than the average in recent history, then the agent is more likely to sell(buy). If a lot of people are buying(selling) and thus the market price momentum is high(low) the agent is more likely to buy(sell). These two forces are weighted by two agent parameters: its conservativeness and its influencability. A third parameter governs the behaviour of our agents, namely  noisiness.\\
-Finally the order price is also taken from a normal distribution with mean $\mu_P$ and standard deviation $\sigma_P$:
-
-\begin{equation}
-\mu_P = 0.99 * \text{currentAssetPrice} \text{if the agent is buying}
+\mu_P = 0.99 p^* \text{ if the agent is buying}
 \end{equation}
 \begin{equation}
-\mu_P = 1.01 * \text{currentAssetPrice} \text{if the agent is selling}
+\mu_P = 1.01 p^* \text{ if the agent is selling}
 \end{equation}
 \begin{equation}
-\sigma_P = \text{const} * \text{marketVolatility}
+\sigma_P = 0.1p^*
 \end{equation}
 
-After agents place their bids, the model undergoes price formation. As with [1], we would like to find a market clearing price price p* for which the highest number of bids can be satisfied. Specifically, we would like the total amount of sell bids below the price to be equal to the total amount of buy bids above the price. Given a sorted list of buy and sell orders, this can be performed in linear time by using a two-pointer implementation. We iterate from the lowest-priced sell order and from the highest-priced buy order, matching pairs of orders as we go, until the current buy price is less than the current sell price. In the case that more satisfiable buy orders exist than sell orders (or vice-versa), the successful bids are chosen randomly. All orders are then executed at p*, the average of the highest matched sell order and lowest matched buy. Then the next timestep starts and the process repeats. \\
-We conducted three experiments, one for each learning strategy. For each experiment we ran multiple simulations, where each initiation starts with the same initial conditions, i.e. type of traders, asset and wealth distribution.  The beginning of each period initialises the agents’ endowments of money and assets, which are normally distributed, and the state of nature. Information about the states of nature is publicly available to all agents, such as…?Borrowing and short selling is prohibited and agents cannot exceed their budget constraint at any point in time. Furthermore, there is no mechanism for money creation.\\
+After agents place their bids, the model undergoes price formation. As with [1], we would like to find a market clearing price price $p^*$ for which the highest number of bids can be satisfied. Specifically, we would like the total amount of sell bids below the price to be equal to the total amount of buy bids above the price. Given a sorted list of buy and sell orders, this can be performed in linear time by using a two-pointer implementation. We iterate from the lowest-priced sell order and from the highest-priced buy order, matching pairs of orders as we go, until the current buy price is less than the current sell price. In the case that more satisfiable buy orders exist than sell orders (or vice-versa), the successful bids are chosen randomly. All orders are then executed at $p^*$, the average of the highest matched sell order and lowest matched buy. Then the next timestep starts and the process repeats. \\
+We perform repeated bidding and price formation, until the distribution of agent wealth changes relatively little. In practice, we simply repeated the process $T=3000$ times. At this point, agents undergo social learning to adjust their individual parameters, and the entire process is repeated. \\
 
-\subsection{Agents}
-The design of our agents closely follows XYZ’s (author) traders, which uses XX heuristic to give us an understanding of how agent parameters change and interact in market phenomena. Simple heuristics allow us to examine the interactions among and within agent parameters and how trading strategies change over time. \\
-In our model all agents are risk neutral and seek to maximise their end-of-trading-period wealth and the expected value of their portfolio. For this end they choose between cash and wealth and only buy assets when the clearing price is low in relation to their mean (vice verca sell when the price is high in relation to their mean.) \\
-We do not model utility functions, but preferences for assets occur due to differences in the influencability of market factors and conservatieness… \\
-Agents submit orders in the same manner, outlined above , but differ in the way they determine the expected value of the asset, which we call the ‘base price’ (the fundamental cost of the asset to the trader).  \\
-There is a continuous set of types of agents with a normal distribution of agent parameters, which also determines how they form their forecast. Traders can vary along the spectrum of influencability and conservativeness, which means… This agent design is inspired by the differences in fundamentalist and technical traders, which trade according to…., respectively. F use… they form their base price by… and aim to buy or sell if the base price is higher or lower than the market determined asset price, which signifies an under- or overvalued stock from their point of view. These traders continuously monitor market activities, update their parameters and adust their trading position accordingly. Their trading activities come to an end when they outspend their budget constraint or … \\
-Technical traders use the current time periods and past return values as a proxy measure for future returns. (e.g. if at time t the two most recent transaction prices are pt and pt1, then a momentum trader's forecast of the next transaction price is simply pt (pt=pt1).  \\
-- wealth is reseat after every learning step to initial wealth distribution. Because if you don't do this then agents that are bad at the bedinning are bad forever and have no change to improve. 
-Learning	
-MLS
-Gradient
-Naive
-- Agents undergo ten learning steps in our model. 
+\subsection{Learning}
 
-Agents also undergo a learning process. The model is run for a specific number of time steps, then a ranking of the agents is done considering their final owned wealth. Depending on how successful each agent was in that ranking, she will adapt her parameters: A successful agent will only slightly change its parameters, while less successful agents will vary them more strongly.
+In our simulation, agents perform a learning process. The model is run for a specific number of time steps, producing a distribution of agent wealth over the agent parameter space. Depending on the relative success of each agent, she will adapt her parameters: A successful agent will only slightly change her parameters, while less successful agents will vary them more strongly. \\
+For our problem, many classical optimization techniques are insufficient; it is unclear whether a single global optimum or even a few local optima exist. In addition, an agent's success is coupled with the parameters of all the other agents, effectively making the parameter space exponential in the number of agents. Furthermore, the bidding and price formation mechanisms in the simulation itself are non-deterministic, making this a stochastic optimization problem. \\
+We make several assumptions to address these issues, and show in the results section that these are reasonable. First, we assume that an agent's success depends only on her own parameters, so that we need only optimize over a single agent's optimization space. Second, while the resulting wealth of a single simulation is random, we assume that it can be approximated by a function of individual agent parameters. In the following sections, we show several techniques for performing gradient ascent optimization on the estimated function. \\
 
-In order to create the optimization algorithms of our agents we approximate a continuously differentiable function using the Moving Least Squares (MLS) method. For this we approximate a continuous function from the scattered point sample of our agents’ influencability/wealth distribution by calculating weighted least squares (WLS) measures from an arbitrary point in the parameter space. We use a Gaussian weighting evaluated at neighbouring points and normalised by their sum. The selected point is consequently moved over all agent positions in the parameter domain, a local linear fit computed and individually evaluated for each point of the sample. 
+\subsubsection{Moving Least Squares}
 
-FORMULA
+A classical technique from computer graphics for estimating smooth surfaces from noisy data is Moving Least Squares (MLS), which has been used for interpolation as early as the work of \citet{lancaster1981surfaces}. For this, we approximate a polynomial (linear in this work) function from the samples of our agents' influencability/wealth distribution by calculating weighted least squares measures from a given point in the parameter space. We use a Gaussian weighting, evaluated at neighbouring points and normalised by their sum. \\
 
-We decided to use this method as it this method successfully interpolates emerging data 
-as was originally suggested by \citet{lancaster1981surfaces}. 
+Formally, for $N$ agents each with $D$ parameters, we are given a list of agent parameters $(X_1, X_2, \ldots X_N)$ and the simulated resultant wealth $(f_1, f_2, \ldots f_N)$. For convenience, we convert to homogeneous coordinates, i.e. from $X_i = (x_{i,1}, x_{i,2}, \ldots x_{i,D})^T$ we construct $\tilde{X}_i = (x_{i,1}, x_{i,2}, \ldots x_{i,D},  1)^T$. For a particular vector $\tilde{X}$, we would like to model a linear function $f(\tilde{X}) = w \tilde{X}, w \in \mathbb{R}^{D+1}$ which maps from $\tilde{X}$ to expected wealth $f$. We would like to minimize the weighted squared error of this function:
 
-MLS converges very slowly, so we use more heuristics (here it converges faster with 1D). so now that it converges faster we see how it works in 2D. But it takes too much computational power. Interesting for future research. 
+\begin{equation}
+E(\tilde{X}; w) = \sum_{i=1}^N (f(\tilde{X}; w) - f_i)^2 \phi(\tilde{X}, \tilde{X}_i)
+\end{equation}
+where $\phi$ is a scaled Gaussian weighting function
+\begin{equation}
+\phi(\tilde{X}, \tilde{X}_i) = e^{-||\tilde{X}-\tilde{X}_i||^2}
+\end{equation}
 
+In practice, $X$ must be first rescaled, because the different agent parameters are orders of magnitude different. At each desired point $\tilde{X}$, this is the classical weighted least squares problem
+\begin{align}
+w^{*} &= \argmin_w E(\tilde{X}; w) \\
+ &= \left( \sum_{i=1}^N \phi(\tilde{X},\tilde{X}_i) \tilde{X}_i \tilde{X}_i^T \right)^{-1} \sum_{i=1}^N \phi({\tilde{X}, \tilde{X_i}}) \tilde{X}_i f_i
+\end{align}
 
+Because this gives a linear function, the local gradient is simply the first $D$ elements of $w^*$. We can use this approximate gradient $G_i = (w^*_1, w^*_2, \ldots w^*_D)$ to find a local optimum, as described in the following section.
 
-
-
-
-
-Description of MLS: DANIEL
+\subsubsection{ Heuristics for Gradient Ascent}
 
 Another optimization approach is one we developed and call Heuristic Gradient. It calculates a gradient that has no mathematical meaning, but is rather a quantity that heuristically represents in which direction the agent will want to move in order to imitate more successfull agents. \\
 We enumerate our agents with the index $i$ for $i=1,...,N$. Without loss of generality we assume $N$ to be the most successfull agent and $1$ to be the least successfull agent (with regard to the total wealth owned after a simulation). We denote the net wealth of an agent $i$ as $W_i$. We consider an agent parameter $X_i$ which might for example be the influencability or the conservativeness. The gradient for all parameters is computed separately and thus we only cover the optimization of one such agent parameter. \\
