@@ -10,7 +10,7 @@ from optimization import *
 # Number of agents
 N = 1000
 # Number of simulation steps
-T = 1000
+T = 400
 # Initial asset price
 P0 = 100.
 # Initial money count of agents
@@ -33,8 +33,7 @@ def main():
 
 	resetSimulation(agents, market, P0, M0, A0)
 	for t in range(0, T):
-		#simulationStep(agents, market, buySellFilename.format(t), t)
-		simulationStep(agents, market)
+		simulationStep(agents, market, buySellFilename.format(t), t)
 	savePriceHistoryToFile(market, outdir + 'price_history.png')
 	saveReturnHistoryToFile(market, outdir + 'return_history.png')
 	saveReturnDistributionToFile(market, outdir + 'return_distribution.png')

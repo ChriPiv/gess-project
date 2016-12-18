@@ -7,6 +7,7 @@
 \usepackage{epstopdf}
 \usepackage{natbib}
 \usepackage{amssymb, amsmath}
+\usepackage{fancyref}
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
 \DeclareMathOperator*{\argmin}{arg\,min}
@@ -210,11 +211,24 @@ In figure \ref{fig:heuristicgradient} one can see a few examples where a simulat
 We implemented the above methods in Python. We used $N=1000$ agents and $T=3000$ timesteps per simulation, repeated over $L=300$ learning steps (which was generally sufficient to show convergence). Our agents each started with $M=30000$ money and $A=300$ of the tradeable asset, valued at $p_0^*=100$. Each simulation step has runtime that is roughly linear in the number of agents (taking around 1 minute to complete all $T$ steps), while the optimization step is somewhat more complicated. The entire process takes around 10 hours to comlete, and our full experiments were run on the ETH Z\"urich Euler cluster (Intel Xeon E5-2680 CPUs).
 
 \section{Simulation Results and Discussion}
-for simulation: DANIEL
-* price formation: buy+sell curves
-* price evolution: show graph
-* justification of model: return evolution, show fat tail distribution
 
+\subsection{Single Simulation}
+
+For clarity, we illustrate the results of a single simulation step in this section, although we repeated this process many times in the final result. \Fref{fig:singleStep} shows the buy/sell curves at selected timesteps, and the price evolution over a single simulation. Qualitative observations, such as the periodic behaviour of the market due to the tradeoff between mean-reversion and trend-following, suggest that this market behaves in a realistic way. From this premise, we performed a series of learning experiments.
+\begin{figure}
+  \centering
+  \quad
+  \includegraphics[width=0.31\textwidth]{figures/buy_sell_0046.png}
+  \includegraphics[width=0.31\textwidth]{figures/buy_sell_0047.png}
+  \includegraphics[width=0.31\textwidth]{figures/buy_sell_0048.png}
+  \includegraphics[width=0.31\textwidth]{figures/buy_sell_0049.png}
+  \includegraphics[width=0.31\textwidth]{figures/buy_sell_0050.png}
+  \includegraphics[width=0.31\textwidth]{figures/price_history.png}
+  \caption[Price Evolution]{Buy/sell curves from 5 consecutive timesteps ($t=46$ to $t=50$). This selection shows a rise in demand and drop in supply, resulting in a price increase. The price intersections were calculated and plotted over 400 timesteps in the bottom right figure.}
+  \label{fig:singleStep}
+\end{figure}
+
+\subsection{Results of Agent Learning}
 Running MLS turns out to be computationally very expensive. The amount of time steps needed to reach an equilibrium distribution was about the same for the few examples we ran (as can be seen in figure \ref{fig:heuristicvsmls}), but the computation time was much longer. Thus in the scope of this project it was decided to use the Heuristic Gradient method, as simulation times using Heuristic Gradient were very long already. \\
 \begin{figure}
   \centering
