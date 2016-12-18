@@ -155,10 +155,10 @@ E(\tilde{X}; w) = \sum_{i=1}^N (f(\tilde{X}; w) - f_i)^2 \phi(\tilde{X}, \tilde{
 \end{equation}
 where $\phi$ is a scaled Gaussian weighting function
 \begin{equation}
-\phi(\tilde{X}, \tilde{X}_i) = e^{-||\tilde{X}-\tilde{X}_i||^2}
+\phi(\tilde{X}, \tilde{X}_i) = e^{-||\Sigma (\tilde{X}-\tilde{X}_i)||^2}
 \end{equation}
 
-In practice, $X$ must be first rescaled, because the different agent parameters are orders of magnitude different. At each desired point $\tilde{X}$, this is the classical weighted least squares problem
+Notably, $\tilde{X}$ must be rescaled by $\Sigma$, because the different agent parameters are orders of magnitude different; for the $D=1$ case, we used $\Sigma = \left( \begin{smallmatrix} 0.5&0\\0&1 \end{smallmatrix} \right) $. At each desired point $\tilde{X}$, this is the classical weighted least squares problem
 \begin{align}
 w^{*} &= \argmin_w E(\tilde{X}; w) \\
  &= \left( \sum_{i=1}^N \phi(\tilde{X},\tilde{X}_i) \tilde{X}_i \tilde{X}_i^T \right)^{-1} \sum_{i=1}^N \phi({\tilde{X}, \tilde{X_i}}) \tilde{X}_i f_i
@@ -206,7 +206,8 @@ In figure \ref{fig:heuristicgradient} one can see a few examples where a simulat
 \end{figure}
 
 \section{Implementation}
-DANIEL
+
+We implemented the above methods in Python. We used $N=1000$ agents and $T=3000$ timesteps per simulation, repeated over $L=300$ learning steps (which was generally sufficient to show convergence). Our agents each started with $M=30000$ money and $A=300$ of the tradeable asset, valued at $p_0^*=100$. Each simulation step has runtime that is roughly linear in the number of agents (taking around 1 minute to complete all $T$ steps), while the optimization step is somewhat more complicated. The entire process takes around 10 hours to comlete, and our full experiments were run on the ETH Z\"urich Euler cluster (Intel Xeon E5-2680 CPUs).
 
 \section{Simulation Results and Discussion}
 for simulation: DANIEL
@@ -214,7 +215,7 @@ for simulation: DANIEL
 * price evolution: show graph
 * justification of model: return evolution, show fat tail distribution
 
-Running MLS turns out to be computationally very expensive. The amount of time steps needed to reach an equilibrium distribution was about the same for the few examples we ran (as can be seen in figure \ref{fig:heuristicvsmls}), but the computation time was much longer. Thus in the scope of this project it was decided to use the Heuristic Gradient method, as simulation times using Heuristic Gradient were very long already (around 10 hours for 300 learning steps). \\
+Running MLS turns out to be computationally very expensive. The amount of time steps needed to reach an equilibrium distribution was about the same for the few examples we ran (as can be seen in figure \ref{fig:heuristicvsmls}), but the computation time was much longer. Thus in the scope of this project it was decided to use the Heuristic Gradient method, as simulation times using Heuristic Gradient were very long already. \\
 \begin{figure}
   \centering
   \quad
