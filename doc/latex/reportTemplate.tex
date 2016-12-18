@@ -39,13 +39,13 @@
 \bigskip
 
 
-\begin{tabular}{@{}p{3.3cm}@{}p{6cm}@{}@{}p{6cm}@{}}
+\begin{tabular}{@{}p{1.3cm}@{}p{5cm}@{}@{}p{5cm}@{}@{}p{5cm}@{}}
 \begin{minipage}{3cm}
 
 \end{minipage}
 &
 \begin{minipage}{6cm}
-\vspace{2mm} \large Name 1
+\vspace{2mm} \large Daniel Keyes
 
  \vspace{\baselineskip}
 
@@ -53,7 +53,13 @@
 &
 \begin{minipage}{6cm}
 
-\large Name 2
+\large Christophe Piveteau
+
+\end{minipage}
+&
+\begin{minipage}{6cm}
+
+\large Isabella Susnjara
 
 \end{minipage}
 \end{tabular}
@@ -105,7 +111,7 @@ One of the earliest works similar to this project is \citet{de1990noise}, which 
 We use an agent-based model closely based on \citet{raberto2001agent} to simulate a financial market with a clearing house price formation mechanism. Our main objective is to understand the changes in agent decision-making features due to learning processes and their market environment. \\
 At the start of the simulation wealth and assets are normally distributed among heterogenous agents. We adopted the assumption that agents are endowed with a finite amount of wealth to purchase a finite amount of assets, which enacts realistic constraints on agents' decision-making. \\
 The base structure of our model is an artificial financial market where agents trade a type of risk-free assets at the end of each of the 1000 trading periods per simulation step. In this market at every trading interval a fixed number of bidders and seller simultaneously place their limit orders at their individual limit prices. Limit prices are prices specified by the agents at which assets are marketed, but where transactions may not be executed if the market price set by investors is not met during the trading period in which the order is left open. At the intersection of demand and supply the market price is formed and the market is cleared for transactions as described in further detail in the following paragraphs. \\
-The amount of total traded assets per time step is computed by aggregating individual orders. Each agent considers how many assets she wants to own in the following time step. This value is drawn from a normal distribution with mean $\mu_S$ and standard deviation $\sigma_S$:
+The amount of total traded assets per time step is computed by aggregating individual orders. Each agent considers how many assets she wants to own in the following time step. This value is drawn from a normal distribution with mean $\text{ }\mu_S$ and standard deviation $\sigma_S$:
 \begin{equation}
 \mu_S = \text{currentAmountOfAssets} * (1 + (\text{marketPrice} - \text{meanMarketPriceOverNTimesteps}) * \text{agentConservativeness} + \text{priceMomentum} * \text{agentInfluencability}, \sigma_S = \text{agentNoisiness})
 \end{equation}
@@ -284,7 +290,7 @@ There are however still many areas that warrant further investigation of our mod
 \begin{itemize}
   \item The restriction of the agent parameter space from 3D to 1D is completely arbitrary. Ideally one would want to run the optimization in all parameters, but this necessitates more computational power and time than available to us for our project.
   \item The optimization process should be investigated more thourougly. It is not a typical optimization process where one wants to find the extrema of a multivariate fitness function, because of two reasons: The output of our fitness function is stochastic and strongly depends on the other agent. The fitness function therefore changes slightly at each learning step as all the other agents change their parameters thus changing the market dynamics. Our optimization method naively ignores this fact. Therefore further research for more suitable mathematical methods is necessary.
-  \item Our current result do not justify why our model and our optimization approach are sensible to model a real financial market. In contrary to other agent-based research works (e.g. TODO CITE PAPER) our invesetigation does not only aim to reproduce realistic emergent market behaviour, but also approximatively realistic agent behaviour. Justifying and analyzing a decision-making model is very difficult as there is only data what trade orders agents make, not why they make them. \\
+  \item Our current result do not justify why our model and our optimization approach are sensible to model a real financial market. In contrary to other agent-based research works (e.g. \cite{raberto2001agent}) our invesetigation does not only aim to reproduce realistic emergent market behaviour, but also approximatively realistic agent behaviour. Justifying and analyzing a decision-making model is very difficult as there is only data what trade orders agents make, not why they make them. \\
   One way to still analyze our agents would be to make them compete in a market whose price history is taken from real market data, thus watching if our most successfull strategy would also be the most successfull in the real-world market. \\
   Another way to evaluate our model would be to fit real-world agent behaviour to our agent model by analyzing their trade orders and estimating their influencability, conservativeness and noisiness. One could then analyze how well those estimated agent parameter predict further trade orders of the real-world agent.
 \end{itemize}
