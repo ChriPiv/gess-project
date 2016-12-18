@@ -1,7 +1,7 @@
 # MATLAB Fall 2016 – Research Plan
 
 > * Group Name: Council of Rivendell 
-> * Group participants names: Daniel Keyes, Isabella Marquez, Christophe Piveteau
+> * Group participants names: Daniel Keyes, Christophe Piveteau, Isabella Susnjara
 > * Project Title: Learning in Simulated Agent-based Financial Markets
 
 ## General Introduction
