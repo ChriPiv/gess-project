@@ -165,10 +165,10 @@ MLS converges very slowly, so we use more heuristics (here it converges faster w
 Description of MLS: DANIEL
 
 Another optimization approach is one we developed and call Heuristic Gradient. It calculates a gradient that has no mathematical meaning, but is rather a quantity that heuristically represents in which direction the agent will want to move in order to imitate more successfull agents. \\
-We enumerate our agents with the index $i$ for $i=1,...,N$. Without loss of generality we assume $N$ to be the most successfull agent and $1$ to be the least successfull agent (with regard to the total wealth owned after a simulation). We denote the net wealth of an agent $i$ as $W_i$. We consider an agent parameter $P_i$ which might for example be the influencability or the conservativeness. The gradient for all parameters is computed separately and thus we only cover the optimization of one such agent parameter. \\
+We enumerate our agents with the index $i$ for $i=1,...,N$. Without loss of generality we assume $N$ to be the most successfull agent and $1$ to be the least successfull agent (with regard to the total wealth owned after a simulation). We denote the net wealth of an agent $i$ as $W_i$. We consider an agent parameter $X_i$ which might for example be the influencability or the conservativeness. The gradient for all parameters is computed separately and thus we only cover the optimization of one such agent parameter. \\
 We define the parameter space distance between two agents as
 \begin{equation}
-  d(i,j):=P_i-P_j
+  d(i,j):=X_i-X_j
 \end{equation}
 The heuristic gradient of the $i$th agent is defined as \\
 \begin{equation}\label{eq:heuristicgradient}
@@ -184,9 +184,9 @@ and
 \end{equation}
 where $\lambda$ is a constant that is chosen depending on the order of magnitdue of the agent parameter considered. \\
 In the formula \ref{eq:heuristicgradient} one can see that the gradient is a weighed sum over all other agents where the weight exponentially decreases with the distance of the other agent in the agent parameter space. The gradient considers the difference of networth of the two agents as well as the success of the other agent compared to the most successful agent. Finally the gradient is multiplied by the normalized rank of the agent, meaning by $1$ for the least successfull agent and by $0$ for the most successfull agent. Therefore the more successfull an agent, the smaller its gradient will be and the most successfull agent has a gradient of $0$. \\
-Finally the adaptation of the agent parameter $P_i'$ for the next time step is given by
+Finally the adaptation of the agent parameter $X_i'$ for the next time step is given by
 \begin{equation}
-  P_i' = P_i + N(C_1\cdot G_i, C_2)
+  X_i' = X_i + N(C_1\cdot G_i, C_2)
 \end{equation}
 where $N(\mu, \sigma)$ is a normal draw from a normal distribution with mean $\mu$ and standard deviation $\sigma$ and $C_1,C_2$ are constants chosen appropriately for the order of magnitude of the agent parameter $P$. \\
 In figure \ref{fig:heuristicgradient} one can see a few examples where a simulation is run on a given distribution of agent parameters and what the resulting gradient of the agents look like.
