@@ -88,7 +88,7 @@
 
 
 \abstract{
-We present an agent-based model designed to simulate trading dynamics of a financial market. The behaviour of the individual agents is determined by three parameters, which we dub `conservativeness', `influencability', and `noisiness'. This parameter space allows one to produce agent behaviour that can mimic a continuous range of strategies encompassing momentum traders and noise traders. We perform repeated simulation rounds; in each simulation, agents place bids, and price formation is performed by determining a market clearing price and executing admissible bids. Finally we analyse multiple learning strategies so that agents optimise their success (expected net worth) in the simulation. We use a heuristic method for performing Gradient Descent optimisation. As this optimisation suffers from the curse of dimensionality, we reduce the agent paramater space to one dimension for computational reasons. In one dimension the strategy distribution converges stably to a characteristic Gaussian-like distribution, independent of the initial agent strategy distribution.
+We present an agent-based model designed to simulate trading dynamics of a financial market. The behaviour of the individual agents is determined by three parameters, which we dub `conservativeness', `influencability', and `noisiness'. This parameter space allows one to produce agent behaviour that can mimic a continuous range of strategies encompassing momentum traders and noise traders. We perform repeated simulation rounds; in each simulation, agents place bids, and price formation is performed by determining a market clearing price and executing admissible bids. Finally we analyse multiple learning strategies so that agents optimise their success (expected net worth) in the simulation. We use a heuristic method for performing Gradient Descent optimisation. As this optimisation suffers from the curse of dimensionality, we reduce the agent parameter space to one dimension for computational reasons. In one dimension the strategy distribution converges stably to a characteristic Gaussian-like distribution, independent of the initial agent strategy distribution.
 }
 \newpage
 
@@ -98,18 +98,18 @@ We present an agent-based model designed to simulate trading dynamics of a finan
 \subsection{Financial Actor Behaviour}
 
 Due to the hyper-competitive nature of financial markets and their near-instantaneous price adjustments, prominent academics assumed that individual rationality in decision making leads to efficient price outcomes \citep{zeckhauser1991nonrational}. This theory is known as the Efficient Market Hypothesis (EMH), which assumes all market information is incorporated at the price, hence assets trade at their intrinsic value and `beating the market' becomes impossible. \\
-Under such conditions, since all agents are perfectly informed, picking undervalued stocks via fundamental (relating to macroeconomic factors) or technical (depending on price movement and volume of past trading activity) market analysis is redundant. However, although consensus about the efficiency of markets has yet to be reached, there is some disbelief of the ‘rationality of the markets’ especially after the 2007-09 crisis. This perspective suggests that external market factors, such as trading strategies and the resulting asset prices, are the underlying behavioural parameters. This warrents the investigation of varied agents and their effect on the market. \\
+Under such conditions, since all agents are perfectly informed, picking undervalued stocks via fundamental (relating to macroeconomic factors) or technical (depending on price movement and volume of past trading activity) market analysis is redundant. However, although consensus about the efficiency of markets has yet to be reached, there is some disbelief of the ‘rationality of the markets’ especially after the 2007-09 crisis. This perspective suggests that external market factors, such as trading strategies and the resulting asset prices, are the underlying behavioural parameters. This warrants the investigation of varied agents and their effect on the market. \\
 
 \subsection{The Case for Simulation}
 The importance of understanding the dynamics in a financial market and the parameters that determine investor behaviour is manifested in the various policy efforts that seek to maintain integrity in the financial system.\\
-For instance, in order to secure market confidence, regulate foreign participation and prevent collusion, policy makers have become increasingly interested in identifying dominant trading strategies and the social effects that level the playing field. The market composition plays a significant role in the predictive analysis as it is likely to exacerbate inherent financial dynamics. Examples are the speculative bubbles experienced in 2000 and 2007 as observed by \citet{kaisoji2015super}. \\
+For instance, in order to secure market confidence, regulate foreign participation and prevent collusion, policy makers have become increasingly interested in identifying dominant trading strategies and the social effects that level the playing field. The market composition plays a significant role in the predictive analysis as it is likely to exacerbate inherent financial dynamics. Examples are the speculative bubbles experienced in 2000 and 2007 as observed by \citet{kaizoji2015super}. \\
 One of the earliest works similar to this project is \citet{de1990noise}, which uses an agent-based economic model. Further related works that use the same model have mostly investigated emerging market characteristics (formation of demand/supply or characteristic price formation). Since the agent-based model has proven its usefulness in modelling market characteristics we feel comfortable to adopt and expand the proposed model in order to study how emergent market characteristics propagate back to the agent as in how they adapt their strategies.
 
 \section{Description of the Model}
 
 \subsection{Market Conditions and Trading Mechanism}
 We use an agent-based model closely based on \citet{raberto2001agent} to simulate a financial market with a market-clearing price formation mechanism. Our main objective is to understand the evolution of market dynamics as agent strategies change due to social learning among agents. \\
-At the start of the simulation, wealth and assets are uniformly distributed among agents, who have heterogenous strategies. Their strategies are defined by three agent parameters, which we refer to as conservativeness $C_i$, influentiability $I_i$, and noisiness $N_i$ for agent $i$. We adopted the assumption that the market comprising these agents is endowed with a finite amount of wealth and assets, which enacts realistic constraints on agents' decision-making. \\
+At the start of the simulation, wealth and assets are uniformly distributed among agents, who have heterogeneous strategies. Their strategies are defined by three agent parameters, which we refer to as conservativeness $C_i$, influencability $I_i$, and noisiness $N_i$ for agent $i$. We adopted the assumption that the market comprising these agents is endowed with a finite amount of wealth and assets, which enacts realistic constraints on agents' decision-making. \\
 The base structure of our model is an artificial financial market where agents trade an asset in each of $T$ trading periods per simulation. At every trading interval, agents choose to either buy or sell, and they simultaneously place limit orders at individual limit prices. Limit prices are prices specified by the agents at which assets are marketed, but where transactions may not be executed if the market price set by investors is not met during the trading period. This induces a demand and supply curve. The market clearing price is computed at the intersection of demand and supply, and admissible transactions are cleared as described in further detail in the following paragraphs. \\
 The amount of total traded assets per time step is computed by aggregating individual orders. Each agent considers how many assets she wants to own in the following time step, denoted $A_i$. This value is drawn from a normal distribution with mean $\mu_A$ and standard deviation $\sigma_{A_i}$:
 \begin{equation}
@@ -121,7 +121,7 @@ H_t = \theta H_{t-1} + (1 - \theta)(\frac{p^*_t}{p^*_{t-1}} - 1)
 \end{equation}
 where $\theta$ controls the horizon of the weighted average. We use $\theta=0.8$, corresponding approximately to a 5-timestep window. \\
 We see that $\mu_{A_i}$ remains at the current owned amount if both agent parameters are $0$. Otherwise, the conservativeness and influentiability forces affect agent behaviour. If the market price is higher (or lower) than the intrinsic price, then the agent is more likely to sell (or buy, respectively) based on conservativeness. If many agents have been buying (or selling) and thus the market price momentum is high (or low) the agent is more likely to buy (or sell), according to influentiability.\\
-In this way, conservativeness describes an agent's belief that prices exhibit mean reverstion, akin to fundamentalist trading, and influentiability describes an agent's belief in trend-following behavior, akin to chartist trading. \\
+In this way, conservativeness describes an agent's belief that prices exhibit mean reversion, akin to fundamentalist trading, and influentiability describes an agent's belief in trend-following behavior, akin to chartist trading. \\
 Finally the exact order price is also taken from a normal distribution distributed as $\mathcal{N}(\mu_{P_i}, \sigma_{P_i})$, where:
 
 \begin{equation}
@@ -157,7 +157,7 @@ where $\phi$ is a scaled Gaussian weighting function
 \phi(\tilde{X}, \tilde{X}_i) = e^{-||\Sigma (\tilde{X}-\tilde{X}_i)||^2}
 \end{equation}
 
-Notably, $\tilde{X}$ must be rescaled by $\Sigma$, because the different agent parameters are orders of magnitude different; for the $D=1$ case, we used $\Sigma = \left( \begin{smallmatrix} 0.5&0\\0&1 \end{smallmatrix} \right) $. At each desired point $\tilde{X}$, this is the classical weighted least squares problem
+Notably, $\tilde{X}$ must be re-scaled by $\Sigma$, because the different agent parameters are orders of magnitude different; for the $D=1$ case, we used $\Sigma = \left( \begin{smallmatrix} 0.5&0\\0&1 \end{smallmatrix} \right) $. At each desired point $\tilde{X}$, this is the classical weighted least squares problem
 \begin{align}
 w^{*} &= \argmin_w E(\tilde{X}; w) \\
  &= \left( \sum_{i=1}^N \phi(\tilde{X},\tilde{X}_i) \tilde{X}_i \tilde{X}_i^T \right)^{-1} \sum_{i=1}^N \phi({\tilde{X}, \tilde{X_i}}) \tilde{X}_i f_i
@@ -167,8 +167,8 @@ Because this gives a linear function, the local gradient is simply the first $D$
 
 \subsubsection{Heuristics for Gradient Ascent}
 
-Another optimisation approach is one we developed and call Heuristic Gradient. It calculates a gradient that has no mathematical meaning, but is rather a quantity that heuristically represents in which direction the agent will want to move in order to imitate more successfull agents. \\
-We enumerate our agents with the index $i$ for $i=1,...,N$. Without loss of generality we assume $N$ to be the most successfull agent and $1$ to be the least successfull agent (with regard to the total wealth owned after a simulation). We denote the net wealth of an agent $i$ as $W_i$. We consider an agent parameter $X_i$ which might for example be the influencability or the conservativeness. The gradient for all parameters is computed separately and thus we only cover the optimisation of one such agent parameter. \\
+Another optimisation approach is one we developed and call Heuristic Gradient. It calculates a gradient that has no mathematical meaning, but is rather a quantity that heuristically represents in which direction the agent will want to move in order to imitate more successful agents. \\
+We enumerate our agents with the index $i$ for $i=1,...,N$. Without loss of generality we assume $N$ to be the most successful agent and $1$ to be the least successful agent (with regard to the total wealth owned after a simulation). We denote the net wealth of an agent $i$ as $W_i$. We consider an agent parameter $X_i$ which might for example be the influencability or the conservativeness. The gradient for all parameters is computed separately and thus we only cover the optimisation of one such agent parameter. \\
 We define the parameter space distance between two agents as
 \begin{equation}
   d(i,j):=X_i-X_j
@@ -185,8 +185,8 @@ and
 \begin{equation}
   C_i:=\sum\limits_{\substack{i=1 \\ i\neq j}}^{N}{w_{ij}}
 \end{equation}
-where $\lambda$ is a constant that is chosen depending on the order of magnitdue of the agent parameter considered. \\
-In the formula \ref{eq:heuristicgradient} one can see that the gradient is a weighed sum over all other agents where the weight exponentially decreases with the distance of the other agent in the agent parameter space. The gradient considers the difference of networth of the two agents as well as the success of the other agent compared to the most successful agent. Finally the gradient is multiplied by the normalised rank of the agent, meaning by $1$ for the least successfull agent and by $0$ for the most successfull agent. Therefore the more successfull an agent, the smaller its gradient will be and the most successfull agent has a gradient of $0$. \\
+where $\lambda$ is a constant that is chosen depending on the order of magnitude of the agent parameter considered. \\
+In the formula \ref{eq:heuristicgradient} one can see that the gradient is a weighed sum over all other agents where the weight exponentially decreases with the distance of the other agent in the agent parameter space. The gradient considers the difference of net worth of the two agents as well as the success of the other agent compared to the most successful agent. Finally the gradient is multiplied by the normalised rank of the agent, meaning by $1$ for the least successful agent and by $0$ for the most successful agent. Therefore the more successful an agent, the smaller its gradient will be and the most successful agent has a gradient of $0$. \\
 Finally the adaptation of the agent parameter $X_i'$ for the next time step is given by
 \begin{equation}
   X_i' = X_i + N(C_1\cdot G_i, C_2)
@@ -200,19 +200,19 @@ In figure \ref{fig:heuristicgradient} one can see a few examples where a simulat
   \includegraphics[width=0.45\textwidth]{figures/heuristic_gradient_example_2.png}
   \includegraphics[width=0.45\textwidth]{figures/heuristic_gradient_example_3.png}
   \includegraphics[width=0.45\textwidth]{figures/heuristic_gradient_example_4.png}
-  \caption[Examples Heuristic Gradient]{Two examples where the simulation was run for a given 1D agent strategy distribution (left) and the corresponding agent gradients were computed (right). In the first example one can clearly see most agents having a negative gradient as the most successfull agents were the ones with smallest influencability. The second example shows a more symmetric gradient distribution.}
+  \caption[Examples Heuristic Gradient]{Two examples where the simulation was run for a given 1D agent strategy distribution (left) and the corresponding agent gradients were computed (right). In the first example one can clearly see most agents having a negative gradient as the most successful agents were the ones with smallest influencability. The second example shows a more symmetric gradient distribution.}
   \label{fig:heuristicgradient}
 \end{figure}
 
 \section{Implementation}
 
-We implemented the above methods in Python. We used $N=1000$ agents and $T=3000$ timesteps per simulation, repeated over $L=300$ learning steps (which was generally sufficient to show convergence). Our agents each started with $M=30000$ money and $A=300$ of the tradeable asset, valued at $p_0^*=100$. Each simulation step has runtime that is roughly linear in the number of agents (taking around 1 minute to complete all $T$ steps), while the optimisation step is somewhat more complicated. The entire process takes around 10 hours to comlete, and our full experiments were run on the ETH Z\"urich Euler cluster (Intel Xeon E5-2680 CPUs).
+We implemented the above methods in Python. We used $N=1000$ agents and $T=3000$ timesteps per simulation, repeated over $L=300$ learning steps (which was generally sufficient to show convergence). Our agents each started with $M=30000$ money and $A=300$ of the tradeable asset, valued at $p_0^*=100$. Each simulation step has runtime that is roughly linear in the number of agents (taking around 1 minute to complete all $T$ steps), while the optimisation step is somewhat more complicated. The entire process takes around 10 hours to complete, and our full experiments were run on the ETH Z\"urich Euler cluster (Intel Xeon E5-2680 CPUs).
 
 \section{Simulation Results and Discussion}
 
 \subsection{Single Simulation}
 
-For clarity, we illustrate the results of a single simulation step in this section, although we repeated this process many times in the final result. \Fref{fig:singleStep} shows the buy/sell curves at selected timesteps, and the price evolution over a single simulation. Qualitative observations, such as the periodic behaviour of the market due to the tradeoff between mean-reversion and trend-following, suggest that this market behaves in a realistic way. From this premise, we performed a series of learning experiments.
+For clarity, we illustrate the results of a single simulation step in this section, although we repeated this process many times in the final result. \Fref{fig:singleStep} shows the buy/sell curves at selected time steps, and the price evolution over a single simulation. Qualitative observations, such as the periodic behaviour of the market due to the trade off between mean-reversion and trend-following, suggest that this market behaves in a realistic way. From this premise, we performed a series of learning experiments.
 \begin{figure}
   \centering
   \quad
@@ -237,7 +237,7 @@ Running MLS turns out to be computationally very expensive. The amount of time s
   \includegraphics[width=0.45\textwidth]{figures/heuristic_vs_mls_5.png}
   \includegraphics[width=0.45\textwidth]{figures/heuristic_vs_mls_3.png}
   \includegraphics[width=0.45\textwidth]{figures/heuristic_vs_mls_6.png}
-  \caption[Comparison MLS and Heuristic Gradient]{Simulation result of the MLS (left) and Heuristic Gradient (right) methods for the same inital agent distributions after 0, 50 and 200 timesteps. Both methods reached a stable distribution at around 150 timesteps.}
+  \caption[Comparison MLS and Heuristic Gradient]{Simulation result of the MLS (left) and Heuristic Gradient (right) methods for the same initial agent distributions after 0, 50 and 200 timesteps. Both methods reached a stable distribution at around 150 timesteps.}
   \label{fig:heuristicvsmls}
 \end{figure}
 Additionally it was decided to reduce the agent parameter space to one dimension, as 2D (or even 3D simulation if the agent noisiness is not fixed) simulations need more learning steps and/or lower learning parameter. This can be seen in figure \ref{fig:2dsimulation} where a 2D simulation was run for 1000 learning steps. Even though the shrinking shape of the agent parameter distribution suggests that it would converge at some point, that point is still not reached after 1000 learning steps. \\
@@ -259,7 +259,7 @@ To reduce the parameter space to 1D we bind influencability and conservativeness
 \end{figure}
 
 \hfill \\
-All folowing simulations are done with the heuristic gradient method in the reduced 1D agent parameter space. One example of such a learning process is visualised in figure \ref{fig:convergenceexample}. In this case the initial agent distribution was chosen to be normally distributed with mean 5 and standard deviation 3. As one can see the strategy distribution converges to a stable gaussian-like shape. This convergence behaviour is analysed if firstly it is consistently reproducible and secondly if it depends on  the inital strategy distribution of the agents. \\
+All following simulations are done with the heuristic gradient method in the reduced 1D agent parameter space. One example of such a learning process is visualised in figure \ref{fig:convergenceexample}. In this case the initial agent distribution was chosen to be normally distributed with mean 5 and standard deviation 3. As one can see the strategy distribution converges to a stable gaussian-like shape. This convergence behaviour is analysed if firstly it is consistently reproducible and secondly if it depends on  the initial strategy distribution of the agents. \\
 \begin{figure}
   \centering
   \quad
@@ -270,14 +270,14 @@ All folowing simulations are done with the heuristic gradient method in the redu
   \caption[Convergence Example]{Results of a 1D Heuristic Gradient simulation with initial parameter distribution being normal with mean 5 and standard deviation 3. After around 100 timesteps the distribution converges to a gaussian-like shape and stays that way.}
   \label{fig:convergenceexample}
 \end{figure}
-The simulation is therefore ran 10 times with the same initial distribution of agent paramaters and the same gaussian-like curve was always observed in all the final distributions. All those distributions are fitted against a gaussian function yielding us ten different values for the mean $\mu_{conv}$ and the standard deviation $\sigma_{conv}$. Computing the standard deviation of those two sets yields the result:
+The simulation is therefore ran 10 times with the same initial distribution of agent parameters and the same gaussian-like curve was always observed in all the final distributions. All those distributions are fitted against a gaussian function yielding us ten different values for the mean $\mu_{conv}$ and the standard deviation $\sigma_{conv}$. Computing the standard deviation of those two sets yields the result:
 \begin{center}
   $\mu_{conv} = 4.07\pm 0.03$ \\
   $\sigma_{conv} = 0.53\pm 0.02$
 \end{center}
-The deviations being so small indicate a high reproducability of the result. This gives us an idea of the uncertainty of the simulation result given an initial set of agents. This is very useful when one wants to investigate the dependence of the simulation result on the intial agent parameter distribution as we will below. \\
+The deviations being so small indicate a high reproducability of the result. This gives us an idea of the uncertainty of the simulation result given an initial set of agents. This is very useful when one wants to investigate the dependence of the simulation result on the initial agent parameter distribution as we will below. \\
 \hfill \\
-35 Different simulations were run for different initial agent strategy distributions. The distributions were chosen to be normal with the mean and standard deviation being all possible permutations of $\mu=2,3,4,5,6,7,8$ and $\sigma=1,2,3,4,5$. Some of those initial distributions can be seen in figure \ref{fig:initialconditions}. They span the complete sensible space of agent parameters: Markets with high amount of agents with negative influencability start producing nonsensical behaviour, as most agents try to do the opposite of all other agents. Similarly markets with many agents with influencability larger than 15 were observed to crash quickly, as price immediatly fell down to zero or skyrocketed to unreasonable values. \\
+35 Different simulations were run for different initial agent strategy distributions. The distributions were chosen to be normal with the mean and standard deviation being all possible permutations of $\mu=2,3,4,5,6,7,8$ and $\sigma=1,2,3,4,5$. Some of those initial distributions can be seen in figure \ref{fig:initialconditions}. They span the complete sensible space of agent parameters: Markets with high amount of agents with negative influencability start producing nonsensical behaviour, as most agents try to do the opposite of all other agents. Similarly markets with many agents with influencability larger than 15 were observed to crash quickly, as price immediately fell down to zero or skyrocketed to unreasonable values. \\
 \begin{figure}
   \centering
   \quad
@@ -293,7 +293,7 @@ The deviations being so small indicate a high reproducability of the result. Thi
   \caption[Different Initial Conditions]{9 of the 35 tested initial agent strategy distributions are plotted.}
   \label{fig:initialconditions}
 \end{figure}
-For all 35 different inital conditions the agent distribution converged to the same gaussian-like curve. Analogously as before those curves were fitted resulting in
+For all 35 different initial conditions the agent distribution converged to the same gaussian-like curve. Analogously as before those curves were fitted resulting in
 \begin{center}
   $\mu_{conv} = 4.09\pm 0.07$
   $\sigma_{conv} = 0.52\pm 0.03$
@@ -301,14 +301,14 @@ For all 35 different inital conditions the agent distribution converged to the s
 These numbers are very similar to those observed in the reproducibility experiment, leading to the conclusions that our system always converges to the same strategy distribution.
 
 \section{Summary and Outlook}
-First we developed an agent-based model for financial market that is able to produce a wide variety of agent behaviour by introducing three agent parameters. We investigated an optimisation process for a reduced agent parameter space that converged consistently to the same strategy distribution, independent of the initial distribution in a sensible range of agent parameters. This result is quite remarkable, as such a consitent outcome was not certain at all before running the simulations. However the precise shape of such a equilibrium distribution depends on the optimisation process used. For example if the learning parameter would have been increased, one would expect the width of the equilibrium distribution to increase. Still there is an intrinsic property of our model independent on the learning algorithm that one can extract from our result: If the strategy distribution in a market adopts the gaussian-like shape that we discovered, then the ideal strategy for an agent is to appropriate the parameter value at the mean of the curve. Therefore we have in a certain way found an optimal strategy for the system. \\
+First we developed an agent-based model for financial market that is able to produce a wide variety of agent behaviour by introducing three agent parameters. We investigated an optimisation process for a reduced agent parameter space that converged consistently to the same strategy distribution, independent of the initial distribution in a sensible range of agent parameters. This result is quite remarkable, as such a consistent outcome was not certain at all before running the simulations. However the precise shape of such a equilibrium distribution depends on the optimisation process used. For example if the learning parameter would have been increased, one would expect the width of the equilibrium distribution to increase. Still there is an intrinsic property of our model independent on the learning algorithm that one can extract from our result: If the strategy distribution in a market adopts the gaussian-like shape that we discovered, then the ideal strategy for an agent is to appropriate the parameter value at the mean of the curve. Therefore we have in a certain way found an optimal strategy for the system. \\
 \hfill \\
 There are however still many areas that warrant further investigation of our model and our optimisation process:
 \begin{itemize}
   \item The restriction of the agent parameter space from 3D to 1D is completely arbitrary. Ideally one would want to run the optimisation in all parameters, but this necessitates more computational power and time than available to us for our project.
-  \item The optimisation process should be investigated more thourougly. It is not a typical optimisation process where one wants to find the extrema of a multivariate fitness function, because of two reasons: The output of our fitness function is stochastic and strongly depends on the other agent. The fitness function therefore changes slightly at each learning step as all the other agents change their parameters thus changing the market dynamics. Our optimisation method naively ignores this fact. Therefore further research for more suitable mathematical methods is necessary.
-  \item Our current result do not justify why our model and our optimisation approach are sensible to model a real financial market. In contrary to other agent-based research works (e.g. \cite{raberto2001agent}) our invesetigation does not only aim to reproduce realistic emergent market behaviour, but also approximatively realistic agent behaviour. Justifying and analysing a decision-making model is very difficult as there is only data what trade orders agents make, not why they make them. \\
-  One way to still analyse our agents would be to make them compete in a market whose price history is taken from real market data, thus watching if our most successfull strategy would also be the most successfull in the real-world market. \\
+  \item The optimisation process should be investigated more thoroughly. It is not a typical optimisation process where one wants to find the extrema of a multivariate fitness function, because of two reasons: The output of our fitness function is stochastic and strongly depends on the other agent. The fitness function therefore changes slightly at each learning step as all the other agents change their parameters thus changing the market dynamics. Our optimisation method naively ignores this fact. Therefore further research for more suitable mathematical methods is necessary.
+  \item Our current result do not justify why our model and our optimisation approach are sensible to model a real financial market. In contrary to other agent-based research works (e.g. \citet{raberto2001agent}) our investigation does not only aim to reproduce realistic emergent market behaviour, but also approximately realistic agent behaviour. Justifying and analysing a decision-making model is very difficult as there is only data what trade orders agents make, not why they make them. \\
+  One way to still analyse our agents would be to make them compete in a market whose price history is taken from real market data, thus watching if our most successful strategy would also be the most successful in the real-world market. \\
   Another way to evaluate our model would be to fit real-world agent behaviour to our agent model by analysing their trade orders and estimating their influencability, conservativeness and noisiness. One could then analyse how well those estimated agent parameter predict further trade orders of the real-world agent.
 \end{itemize}
 
